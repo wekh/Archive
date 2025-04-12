@@ -1,0 +1,34 @@
+{
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/software/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "pc.wekh.eu.org"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/tvbox/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "tvbox.wekh.eu.org"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/home/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "wekh.eu.org"
+        }
+      ]
+    }
+  ]
+}

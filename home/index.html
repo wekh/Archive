@@ -1,0 +1,470 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <title>wekh's 导航站</title>
+    <meta name="description" content="wekh的个人网站，期待与更多的人相遇！">
+    <meta name="keywords" content="wekh">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6bff;
+            --accent-color: #00a8ff;
+            --text-color: #333;
+            --text-light: #666;
+            --border-color: #e0e0e0;
+            --card-bg: #fff;
+            --bg-color: #f5f7fa;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            width: 100%;
+            padding: 0 15px;
+        }
+        
+        .intro {
+            text-align: center;
+            padding: 20px 0 30px;
+        }
+        
+        .title {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin: 0 0 20px 10px;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+        
+        .section-title i {
+            margin-right: 10px;
+            color: var(--primary-color);
+        }
+        
+        .section-title span {
+            color: var(--accent-color);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin: 0 10px;
+        }
+        
+        .card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            min-height: 90px;
+            text-decoration: none; /* 去除链接下划线 */
+        }
+        
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+        
+        .copy-card {
+            cursor: pointer;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .copy-card:hover {
+            background: rgba(74, 107, 255, 0.05);
+        }
+        
+        /* 接口卡片图标样式（保留色块） */
+        .copy-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 168, 255, 0.1);
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        
+        /* 推荐卡片图标样式（无背景色块） */
+        .link-card .icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        
+        .icon img {
+            max-width: 80%;
+            max-height: 80%;
+            object-fit: contain;
+        }
+        
+        .content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-color); /* 确保文字颜色一致 */
+        }
+        
+        .card-desc {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .password {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            background: rgba(0, 168, 255, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 5px;
+            cursor: pointer;
+            text-decoration: none; /* 去除密码下划线 */
+        }
+        
+        .password i {
+            margin-right: 3px;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 30px 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+        
+        /* Toast通知 */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .title {
+                font-size: 1.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+            }
+        }
+        
+        /* 全局去除下划线 */
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="intro">
+            <h1 class="title"></h1>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-tv"></i>Tvbox接口</h2>
+            <div class="grid">
+                <div class="card copy-card" id="tvbox" data-clipboard-text="https://tv.wekh.eu.org/tvbox.txt">
+                    <div class="icon"><i class="fas fa-tv"></i></div>
+                    <div class="content">
+                        <div class="card-title">tvbox接口</div>
+                    </div>
+                </div>
+                
+                <div class="card copy-card" id="zhibo" data-clipboard-text="https://tv.wekh.eu.org/epg">
+                    <div class="icon"><i class="fas fa-list"></i></div>
+                    <div class="content">
+                        <div class="card-title">EPG DIYP</div>
+                    </div>
+                </div>
+                
+                <div class="card copy-card" id="zhibo" data-clipboard-text="https://tv.wekh.eu.org/pp.xml">
+                    <div class="icon"><i class="fas fa-book"></i></div>
+                    <div class="content">
+                        <div class="card-title">EPG XML</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-server"></i>订阅节点接口</h2>
+            <div class="grid">
+                <div class="card copy-card" id="CM" data-clipboard-text="https://cm.wwkh.eu.org/cm">
+                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="content">
+                        <div class="card-title">CM</div>
+                    </div>
+                </div>
+                
+                <div class="card copy-card" id="YG" data-clipboard-text="https://yg.wwkh.eu.org/yg">
+                    <div class="icon"><i class="fas fa-key"></i></div>
+                    <div class="content">
+                        <div class="card-title">YG</div>
+                    </div>
+                </div>
+                
+                <div class="card copy-card" id="SV" data-clipboard-text="https://sv.wwkh.eu.org/sv">
+                    <div class="icon"><i class="fas fa-lock"></i></div>
+                    <div class="content">
+                        <div class="card-title">SV</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title"><i class="fas fa-star"></i>相关推荐</h2>
+            <div class="grid">
+                <a href="https://pc.wekh.eu.org/" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(1).png" alt="软件站"></div>
+                    <div class="content">
+                        <div class="card-title">wekh's 软件站</div>
+                        <div class="card-desc">收集一些常用软件</div>
+                    </div>
+                </a>
+                
+                <a href="https://zh.z-lib.today" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(2).png" alt="Z-Library"></div>
+                    <div class="content">
+                        <div class="card-title">Z-Library</div>
+                        <div class="card-desc">世界上最大的电子图书馆</div>
+                    </div>
+                </a>
+                
+                <a href="https://wwkh.lanzoul.com/iK5f12hwxrfc" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(3).png" alt="DIYP直播"></div>
+                    <div class="content">
+                        <div class="card-title">DIYP直播</div>
+                        <div class="card-desc">电视直播空壳，自己配置直播源</div>
+                    </div>
+                </a>
+                
+                <a href="https://wfy.lanzout.com/b0izqfjwb" target="_blank" class="card link-card" data-password="123456">
+                    <div class="icon"><img src="img/gate(4).png" alt="酷9直播"></div>
+                    <div class="content">
+                        <div class="card-title">酷9直播</div>
+                        <div class="card-desc">电视直播空壳，自己配置直播源</div>
+                        <div class="password" title="点击复制密码"><i class="fas fa-lock"></i>密码: 123456</div>
+                    </div>
+                </a>
+                
+                <a href="https://chat.wekh.eu.org/" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(5).png" alt="NextChat"></div>
+                    <div class="content">
+                        <div class="card-title">NextChat</div>
+                        <div class="card-desc">自建免费gpt3.5</div>
+                    </div>
+                </a>
+                
+                <a href="https://tvbox.wekh.eu.org/" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(6).png" alt="影视TV"></div>
+                    <div class="content">
+                        <div class="card-title">影视TV</div>
+                        <div class="card-desc">免费观看电影软件</div>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wekh/Archive/releases/download/latest/v2rayN-windows-64-SelfContained.zip" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(7).png" alt="v2rayN"></div>
+                    <div class="content">
+                        <div class="card-title">v2rayN</div>
+                        <div class="card-desc">使用Xray core的桌面端通用代理软件</div>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wekh/Archive/releases/download/latest/v2rayNG.apk" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(8).png" alt="v2rayNG"></div>
+                    <div class="content">
+                        <div class="card-title">v2rayNG</div>
+                        <div class="card-desc">使用Xray core的安卓端通用代理软件</div>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wekh/Archive/releases/download/latest/nekoray.zip" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(9).png" alt="Nekoray"></div>
+                    <div class="content">
+                        <div class="card-title">Nekoray</div>
+                        <div class="card-desc">使用sing-box的桌面端通用代理软件</div>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wekh/Archive/releases/download/latest/NekoBox.apk" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(9).png" alt="NekoBox"></div>
+                    <div class="content">
+                        <div class="card-title">NekoBox</div>
+                        <div class="card-desc">使用sing-box的安卓端通用代理软件</div>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/wekh/Archive/releases/download/latest/GitHubDesktop-Windows-x64.exe" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(10).png" alt="GitHub Desktop"></div>
+                    <div class="content">
+                        <div class="card-title">GitHub Desktop汉化版本</div>
+                        <div class="card-desc">安装即是中文版</div>
+                    </div>
+                </a>
+                
+                <a href="https://wekh.eu.org/YinCangTuPian.bat" target="_blank" class="card link-card">
+                    <div class="icon"><img src="img/gate(11).png" alt="关闭了解此图片"></div>
+                    <div class="content">
+                        <div class="card-title">关闭了解此图片</div>
+                        <div class="card-desc">快速隐藏/显示"了解此图片"图标</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>星光满载 初心不改 © 2024 wekh</p>
+        </div>
+    </div>
+    
+    <div id="toast" class="toast">复制成功！</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 复制功能
+            new ClipboardJS('.copy-card', {
+                text: function(trigger) {
+                    return $(trigger).data('clipboard-text');
+                }
+            }).on('success', function(e) {
+                showToast('复制成功！');
+                e.clearSelection();
+            }).on('error', function(e) {
+                showToast('复制失败，请重试');
+            });
+            
+            // 处理带密码的链接
+            $('.link-card[data-password]').each(function() {
+                const $card = $(this);
+                const password = $card.data('password');
+                const $password = $card.find('.password');
+                
+                // 点击密码时复制
+                $password.on('click', function(e) {
+                    e.stopPropagation();
+                    copyToClipboard(password, '密码已复制');
+                });
+                
+                // 点击整个卡片时打开链接并复制密码
+                $card.on('click', function(e) {
+                    if (!$(e.target).closest('.password').length) {
+                        e.preventDefault();
+                        copyToClipboard(password, '密码已复制，正在打开链接...', function() {
+                            window.open($card.attr('href'), '_blank');
+                        });
+                    }
+                });
+            });
+            
+            // 通用复制函数
+            function copyToClipboard(text, message, callback) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showToast(message);
+                    if (typeof callback === 'function') {
+                        callback();
+                    }
+                }).catch(function() {
+                    showToast('复制失败，请重试');
+                });
+            }
+            
+            // 显示通知
+            function showToast(message) {
+                const $toast = $('#toast');
+                $toast.text(message).addClass('show');
+                setTimeout(function() {
+                    $toast.removeClass('show');
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+
+</html>

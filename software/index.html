@@ -1,0 +1,531 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <title>wekh's 软件站</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --gray-color: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        .background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+        }
+        
+        #startrack {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .cover {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        .intro {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: white;
+        }
+        
+        .intro h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #f72585, #4cc9f0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .intro h2 {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+        
+        .gate {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .chtitle {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .chtitle span { color: var(--primary-color); }
+        
+        .chtitle::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        }
+        
+        .clear {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 15px;
+        }
+        
+        .item {
+            background-color: white;
+            border-radius: 6px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+            border: 1px solid #e9ecef;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+        
+        .item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
+        }
+        
+        .avatar {
+            padding: 12px;
+            text-align: center;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .avatar img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            border-radius: 6px;
+        }
+        
+        .inner {
+            padding: 12px;
+        }
+        
+        .inner h5 {
+            font-size: 1rem;
+            margin: 0 0 8px 0;
+            color: var(--dark-color);
+        }
+        
+        .inner p {
+            color: var(--gray-color);
+            font-size: 0.8rem;
+            margin: 0 0 8px 0;
+            line-height: 1.4;
+        }
+        
+        .password {
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            margin-top: 8px;
+        }
+        
+        .password i {
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px 0;
+            color: var(--gray-color);
+            font-size: 0.9rem;
+        }
+        
+        .toast {
+            position: fixed;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 20px;
+            background-color: var(--dark-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .toast.show {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .intro { padding: 30px 0 15px; }
+            .intro h1 { font-size: 1.5rem; }
+            .intro h2 { font-size: 1rem; }
+            .clear { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            .gate { padding: 10px; }
+            .chtitle { font-size: 1.2rem; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+</head>
+
+<body>
+    <div class="background">
+        <canvas id="startrack"></canvas>
+        <div class="cover"></div>
+    </div>
+    
+    <div class="main">
+        <div class="intro">
+            <h1>常用电脑软件</h1>
+        </div>
+        
+        <div class="gate">
+            <h2 class="chtitle"></span>
+            <div class="clear">
+                <a href="https://pan.baidu.com/s/1sNhBbsQWp5cPPuA9CysnWw?pwd=xtjh" target="_blank" class="item" data-pwd="xtjh">
+                    <div class="avatar"><img src="img/gate(1).png" alt="Adobe软件"></div>
+                    <div class="inner">
+                        <h5>Adobe破解版</h5>
+                        <p>全套Adobe创意软件，下载安装即可使用</p>
+                        <div class="password">
+                            <i class="bi bi-key-fill"></i>
+                            <span>密码：xtjh</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="https://ep.wps.cn/download" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(2).png" alt="WPS企业版"></div>
+                    <div class="inner">
+                        <h5>WPS企业版</h5>
+                        <p>专业办公套件，输入激活码即可使用</p>
+                    </div>
+                </a>
+                
+                <a href="https://sxy.wzu.edu.cn/info/1085/13370.htm" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(2).png" alt="WPS定制版"></div>
+                    <div class="inner">
+                        <h5>WPS定制版</h5>
+                        <p>教育机构定制版本，自带激活码</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.internetdownloadmanager.com/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(3).png" alt="IDM下载器"></div>
+                    <div class="inner">
+                        <h5>IDM官网下载</h5>
+                        <p>强大的多线程下载工具，提升下载速度</p>
+                    </div>
+                </a>
+                
+                <a href="https://lanzoui.com/b04ako9dg?password=3zq8" target="_blank" class="item" data-pwd="3zq8">
+                    <div class="avatar"><img src="img/gate(4).png" alt="WINRAR"></div>
+                    <div class="inner">
+                        <h5>WINRAR</h5>
+                        <p>优秀的压缩解压软件，支持多种格式</p>
+                        <div class="password">
+                            <i class="bi bi-key-fill"></i>
+                            <span>密码：3zq8</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="https://crystalidea.com/uninstall-tool" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(5).png" alt="Uninstall Tool"></div>
+                    <div class="inner">
+                        <h5>Uninstall Tool</h5>
+                        <p>强大的软件卸载工具，彻底清理残留</p>
+                    </div>
+                </a>
+                
+                <a href="https://geekuninstaller.com/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(6).png" alt="Geek Uninstaller"></div>
+                    <div class="inner">
+                        <h5>Geek Uninstaller</h5>
+                        <p>轻量级卸载工具，快速清理软件</p>
+                    </div>
+                </a>
+                
+                <a href="http://www.zhangqu.org/?page_id=359" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(7).png" alt="二维码转换工具"></div>
+                    <div class="inner">
+                        <h5>二维码图片转矢量</h5>
+                        <p>将二维码图片转换为矢量格式</p>
+                    </div>
+                </a>
+                
+                <a href="https://wwi.lanzoup.com/b05gumbe?password=9xum" target="_blank" class="item" data-pwd="9xum">
+                    <div class="avatar"><img src="img/gate(8).png" alt="HEU KMS激活器"></div>
+                    <div class="inner">
+                        <h5>HEU_KMS_Activator</h5>
+                        <p>强大的系统激活软件，支持多种产品</p>
+                        <div class="password">
+                            <i class="bi bi-key-fill"></i>
+                            <span>密码：9xum</span>
+                        </div>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/zbezj/HEU_KMS_Activator/releases" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(8).png" alt="HEU KMS激活器"></div>
+                    <div class="inner">
+                        <h5>HEU_KMS_Activator</h5>
+                        <p>Github最新版本，持续更新</p>
+                    </div>
+                </a>
+                
+                <a href="https://github.com/massgravel/Microsoft-Activation-Scripts/archive/refs/heads/master.zip" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(9).png" alt="MAS激活工具"></div>
+                    <div class="inner">
+                        <h5>MAS_AIO</h5>
+                        <p>微软激活脚本，一键激活Windows/Office</p>
+                    </div>
+                </a>
+                
+                <a href="https://next.itellyou.cn/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(10).png" alt="我告诉你"></div>
+                    <div class="inner">
+                        <h5>我告诉你</h5>
+                        <p>微软官方原版系统下载</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.iwin10.net/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(11).png" alt="专注于Win10"></div>
+                    <div class="inner">
+                        <h5>专注于win10</h5>
+                        <p>专注，只为与你更好的遇见</p>
+                    </div>
+                </a>
+                
+                <a href="https://firpe.cn/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(12).png" alt="FirPE"></div>
+                    <div class="inner">
+                        <h5>FirPE</h5>
+                        <p>好用的第三方WinPE维护系统</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.wepe.com.cn/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(13).png" alt="微PE"></div>
+                    <div class="inner">
+                        <h5>微PE</h5>
+                        <p>简洁纯净的WinPE维护系统</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.todesk.com/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(14).png" alt="ToDesk"></div>
+                    <div class="inner">
+                        <h5>ToDesk</h5>
+                        <p>免费流畅的远程控制软件</p>
+                    </div>
+                </a>
+                
+                <a href="https://sunlogin.oray.com/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(15).png" alt="向日葵远程"></div>
+                    <div class="inner">
+                        <h5>向日葵远程</h5>
+                        <p>国产优秀远程控制解决方案</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.123pan.com/s/A6cA-5GAJh" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(16).png" alt="雷电模拟器"></div>
+                    <div class="inner">
+                        <h5>雷电模拟器</h5>
+                        <p>电脑玩手游的最佳安卓模拟器</p>
+                    </div>
+                </a>
+                
+                <a href="https://nic.eu.org/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(17).png" alt="eu.org域名"></div>
+                    <div class="inner">
+                        <h5>eu.org</h5>
+                        <p>申请永久免费域名</p>
+                    </div>
+                </a>
+                
+                <a href="https://dash.domain.digitalplat.org/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(18).png" alt="dpdns.org域名"></div>
+                    <div class="inner">
+                        <h5>dpdns.org</h5>
+                        <p>永久免费域名服务</p>
+                    </div>
+                </a>
+                
+                <a href="https://www.videolan.org/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(19).png" alt="VLC播放器"></div>
+                    <div class="inner">
+                        <h5>VLC视频播放器</h5>
+                        <p>全平台支持的万能视频播放器</p>
+                    </div>
+                </a>
+                
+                <a href="https://potplayer.tv/?lang=zh_CN" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(20).png" alt="PotPlayer"></div>
+                    <div class="inner">
+                        <h5>potplayer视频播放器</h5>
+                        <p>轻量高效的多媒体播放器</p>
+                    </div>
+                </a>
+                
+                <a href="https://wwa.lanzoui.com/i4IVjrn8b5e" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(21).png" alt="黑鸟播放器"></div>
+                    <div class="inner">
+                        <h5>黑鸟播放器</h5>
+                        <p>专业的IPTV播放解决方案</p>
+                    </div>
+                </a>
+                
+                <a href="https://tvdat.neocities.org/" target="_blank" class="item">
+                    <div class="avatar"><img src="img/gate(22).png" alt="RedStar播放器"></div>
+                    <div class="inner">
+                        <h5>RedStar视频播放器</h5>
+                        <p>特色视频播放解决方案</p>
+                    </div>
+                </a>
+            </div>
+
+            <div class="footer">
+                <h3>星光满载 初心不改 © 2024 wekh</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 星空背景效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('startrack');
+            const ctx = canvas.getContext('2d');
+            
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            const stars = [];
+            const starCount = 150;
+            
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    radius: Math.random() * 1.2,
+                    vx: Math.floor(Math.random() * 40) - 20,
+                    vy: Math.floor(Math.random() * 40) - 20
+                });
+            }
+            
+            function drawStars() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'white';
+                
+                stars.forEach(function(star) {
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
+            
+            function animateStars() {
+                stars.forEach(function(star) {
+                    star.x += star.vx / 100;
+                    star.y += star.vy / 100;
+                    
+                    if (star.x < 0 || star.x > canvas.width) star.vx = -star.vx;
+                    if (star.y < 0 || star.y > canvas.height) star.vy = -star.vy;
+                });
+                
+                drawStars();
+                requestAnimationFrame(animateStars);
+            }
+            
+            animateStars();
+            
+            window.addEventListener('resize', function() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            });
+
+            // 点击有密码的卡片时自动复制密码
+            document.querySelectorAll('.item[data-pwd]').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    const pwd = this.getAttribute('data-pwd');
+                    copyToClipboard(pwd);
+                    showToast(`密码 "${pwd}" 已复制`);
+                    
+                    // 延迟跳转确保复制完成
+                    setTimeout(() => {
+                        window.open(this.href, '_blank');
+                    }, 100);
+                    
+                    e.preventDefault();
+                });
+            });
+
+            function copyToClipboard(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+
+            function showToast(message) {
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
+                
+                setTimeout(function() {
+                    toast.classList.remove('show');
+                }, 2000);
+            }
+        });
+    </script>
+</body>
+</html>

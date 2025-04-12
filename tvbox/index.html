@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影视TV - 高清影视资源</title>
+    <link rel="icon" href="img/favicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #f8f9fa;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--light-bg);
+            color: var(--dark-text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-weight: 400;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(58, 12, 163, 0.1));
+            border-radius: var(--border-radius);
+            padding: 60px 40px;
+            text-align: center;
+            margin-bottom: 50px;
+            box-shadow: var(--box-shadow);
+            border: 1px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .hero-title {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--dark-text);
+        }
+
+        .hero-description {
+            color: #495057;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+
+        .download-section {
+            width: 100%;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 60px 0 40px;
+            position: relative;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .box {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 30px;
+            width: calc(25% - 30px);
+            min-width: 250px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .box h3 {
+            color: var(--dark-text);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background-color: #e9ecef;
+            color: #495057;
+            padding: 3px 10px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .version-32 {
+            background-color: #dee2e6;
+        }
+
+        .version-64 {
+            background-color: #ced4da;
+        }
+
+        .box a {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            margin-top: 10px;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            max-width: 180px;
+        }
+
+        .box a:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+        }
+
+        .recommend {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(247, 37, 133, 0.3);
+            z-index: 1;
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            color: #6c757d;
+            font-size: 0.9rem;
+            width: 100%;
+            padding: 30px;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 1024px) {
+            .box {
+                width: calc(33.333% - 30px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .box {
+                width: calc(50% - 30px);
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+            
+            .hero {
+                padding: 40px 20px;
+            }
+            
+            .hero-title {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .box {
+                width: 100%;
+                max-width: 350px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .hero-title {
+                font-size: 1.5rem;
+            }
+            
+            .hero-description {
+                font-size: 1rem;
+            }
+            
+            .section-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="logo">影视TV</div>
+            <div class="subtitle">海量高清影视资源 · 多平台支持 · 极速流畅体验</div>
+        </header>
+
+        <div class="hero">
+            <h2 class="hero-title">畅享高清影视世界</h2>
+            <p class="hero-description">影视TV为您提供多平台版本支持，无论是智能电视、手机还是平板，都能获得最佳的观影体验。选择适合您设备的版本下载安装，即刻开启视听盛宴。</p>
+        </div>
+
+        <div class="download-section">
+            <h2 class="section-title">电视版下载</h2>
+            <div class="row">
+                <div class="box">
+                    <div class="recommend">推荐</div>
+                    <h3>电视版 Python</h3>
+                    <div class="version-badge version-32">32位 ARMv7</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/leanback-python-armeabi_v7a.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>电视版 JavaScript</h3>
+                    <div class="version-badge version-32">32位 ARMv7</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/leanback-java-armeabi_v7a.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>电视版 Python</h3>
+                    <div class="version-badge version-64">64位 ARMv8</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/leanback-python-arm64_v8a.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>电视版 JavaScript</h3>
+                    <div class="version-badge version-64">64位 ARMv8</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/leanback-java-arm64_v8a.apk">立即下载</a>
+                </div>
+            </div>
+
+            <h2 class="section-title">手机版下载</h2>
+            <div class="row">
+                <div class="box">
+                    <div class="recommend">推荐</div>
+                    <h3>手机版 Python</h3>
+                    <div class="version-badge version-64">64位 ARMv8</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/mobile-python-arm64_v8a.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>手机版 JavaScript</h3>
+                    <div class="version-badge version-64">64位 ARMv8</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/mobile-java-arm64_v8a.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>手机版 Python</h3>
+                    <div class="version-badge version-32">32位 ARMv7</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/mobile-python-armeabi_v7a.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>手机版 JavaScript</h3>
+                    <div class="version-badge version-32">32位 ARMv7</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/fongmi/apk/release/mobile-java-armeabi_v7a.apk">立即下载</a>
+                </div>
+            </div>
+
+            <h2 class="section-title">其他版本</h2>
+            <div class="row">
+                <div class="box">
+                    <h3>海信专版</h3>
+                    <div class="version-badge">定制版本</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/main/apk/release/%E6%B5%B7%E4%BF%A1%E4%B8%93%E7%89%88.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>电视版-X5离线</h3>
+                    <div class="version-badge">电视专用</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/main/apk/release/%E7%94%B5%E8%A7%86%E7%89%88-X5%E7%A6%BB%E7%BA%BF.apk">立即下载</a>
+                </div>
+                <div class="box">
+                    <h3>安卓4.4盒子版</h3>
+                    <div class="version-badge">老设备兼容</div>
+                    <a href="https://wwkh.eu.org/https://raw.githubusercontent.com/FongMi/Release/main/apk/kitkat/leanback.apk">立即下载</a>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>© 2023 影视TV - 所有资源仅供学习交流使用</p>
+        </footer>
+    </div>
+
+</body>
+</html>
