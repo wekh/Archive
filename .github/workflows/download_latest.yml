@@ -71,20 +71,6 @@ jobs:
               echo "未找到文件: v2rayNG.apk"
           fi
 
-      - name: Download nekoray file
-        run: |
-          echo "Downloading latest nekoray file..."
-          nekoray_url="https://api.github.com/repos/MatsuriDayo/nekoray/releases/latest"
-          nekoray_response=$(curl -s "$nekoray_url")
-          nekoray_download_url=$(echo "$nekoray_response" | jq -r ".assets[] | select(.name | contains(\"windows\")) | .browser_download_url")
-
-          if [ -n "$nekoray_download_url" ]; then
-              curl -s -L -o "nekoray.zip" "$nekoray_download_url"
-              echo "nekoray.zip 下载成功."
-          else
-              echo "未找到文件: nekoray.zip"
-          fi
-
       - name: Download NekoBox file
         run: |
           echo "Downloading latest NekoBox file..."
@@ -133,16 +119,6 @@ jobs:
             -H "Content-Type: application/vnd.android.package-archive" \
             --data-binary @"v2rayNG.apk" \
             "${{ env.upload_url }}?name=v2rayNG.apk"
-
-      - name: Upload nekoray file to Release
-        run: |
-          echo "Uploading nekoray file..."
-          curl -s -o /dev/null \
-            -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Content-Type: application/zip" \
-            --data-binary @"nekoray.zip" \
-            "${{ env.upload_url }}?name=nekoray.zip"
 
       - name: Upload NekoBox file to Release
         run: |
