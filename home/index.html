@@ -3,432 +3,463 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wekh's 导航站</title>
     <meta name="description" content="wekh的个人网站，期待与更多的人相遇！">
-    <meta name="keywords" content="wekh">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-color: #4a6bff;
-            --primary-light: rgba(74, 107, 255, 0.1);
-            --accent-color: #00a8ff;
-            --accent-light: rgba(0, 168, 255, 0.1);
-            --text-color: #333;
-            --text-light: #666;
-            --border-color: #e0e0e0;
-            --card-bg: #fff;
-            --bg-color: #f5f7fa;
-            --gradient-start: #f8fafc;
-            --gradient-end: #eef2f6;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
-            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
+            --primary: #6d8eff;
+            --primary-light: #f0f4ff;
+            --secondary: #8b7fff;
+            --accent: #a88fff;
+            --text: #334155;
+            --text-light: #64748b;
+            --bg: #fafbfe;
+            --card-bg: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.03);
+            --radius: 14px;
         }
-        
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Noto Sans SC', sans-serif;
+            font-family: 'Inter', sans-serif;
         }
-        
+
         body {
-            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
-            color: var(--text-color);
+            background-color: var(--bg);
+            color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
-            position: relative;
         }
-        
-        .main {
+
+        .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 0 20px;
         }
-        
-        .section {
-            margin-bottom: 40px;
-        }
-        
-        .intro {
+
+        .header {
             text-align: center;
-            padding: 20px 0 30px;
+            padding: 70px 0 50px;
         }
-        
+
+        .site-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -0.5px;
+        }
+
+        .site-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 500px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-light);
+            color: var(--primary);
+            margin-right: 14px;
+            font-size: 18px;
+        }
+
         .section-title {
-            font-size: 1.5rem;
-            margin: 0 0 25px 10px;
-            color: var(--text-color);
+            font-size: 1.4rem;
             font-weight: 600;
-            position: relative;
-            padding-left: 15px;
+            color: var(--text);
         }
-        
-        .section-title::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 4px;
-            height: 20px;
-            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
-            border-radius: 2px;
-        }
-        
-        .section-title i {
-            margin-right: 10px;
-            color: var(--primary-color);
-        }
-        
+
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin: 0 10px;
+            gap: 22px;
         }
-        
+
         .card {
             background: var(--card-bg);
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: var(--radius);
+            padding: 24px;
             box-shadow: var(--shadow);
-            border: 1px solid rgba(255, 255, 255, 0.8);
             transition: all 0.3s ease;
             display: flex;
-            align-items: center;
-            min-height: 100px;
+            align-items: flex-start;
             text-decoration: none;
             position: relative;
             overflow: hidden;
+            border: 1px solid var(--border);
         }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.3s ease;
-        }
-        
+
         .card:hover {
             transform: translateY(-5px);
-            box-shadow: var(--shadow-hover);
-            border-color: rgba(74, 107, 255, 0.2);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
-        
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-        
+
         .copy-card {
             cursor: pointer;
-            position: relative;
         }
-        
+
         .copy-card:hover {
-            background: rgba(74, 107, 255, 0.03);
+            background: var(--primary-light);
         }
-        
-        .copy-card::after {
-            content: '\f0c5';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            color: var(--primary-color);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .copy-card:hover::after {
-            opacity: 1;
-        }
-        
-        /* 接口卡片图标样式 */
-        .copy-card .icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            margin-right: 15px;
+
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            margin-right: 18px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            font-size: 22px;
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .copy-card .card-icon {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
-            font-size: 20px;
-            box-shadow: 0 4px 8px rgba(74, 107, 255, 0.15);
         }
-        
-        /* 推荐卡片图标样式 */
-        .link-card .icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 10px;
-            margin-right: 15px;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--primary-color);
-            font-size: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 1px solid rgba(74, 107, 255, 0.1);
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-        }
-        
-        .icon img {
+
+        .card-icon img {
             max-width: 70%;
             max-height: 70%;
             object-fit: contain;
-            border-radius: 6px;
+            border-radius: 8px;
         }
-        
-        .content {
+
+        .card-content {
             flex: 1;
             min-width: 0;
         }
-        
+
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 600;
             margin-bottom: 8px;
+            color: var(--text);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: var(--text-color);
         }
-        
+
         .card-desc {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-light);
+            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-            line-height: 1.5;
         }
-        
+
         .password {
-            font-size: 0.8rem;
-            color: var(--accent-color);
-            background: var(--accent-light);
-            padding: 4px 8px;
-            border-radius: 4px;
+            font-size: 0.85rem;
+            color: var(--accent);
+            background: rgba(168, 143, 255, 0.08);
+            padding: 6px 10px;
+            border-radius: 8px;
             display: inline-flex;
             align-items: center;
-            margin-top: 8px;
+            margin-top: 10px;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s ease;
         }
-        
+
         .password:hover {
-            background: rgba(0, 168, 255, 0.15);
+            background: rgba(168, 143, 255, 0.12);
         }
-        
+
         .password i {
-            margin-right: 5px;
+            margin-right: 6px;
+            font-size: 0.75rem;
         }
-        
+
         .footer {
             text-align: center;
-            padding: 40px 0 20px;
+            padding: 60px 0 40px;
             color: var(--text-light);
             font-size: 0.9rem;
-            position: relative;
+            margin-top: 40px;
         }
-        
+
         .footer::before {
             content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
+            display: block;
             width: 100px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 0 auto 30px;
         }
-        
-        /* Toast通知 */
+
         .toast {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            top: 24px;
+            right: 24px;
+            background: var(--text);
             color: white;
-            padding: 12px 20px;
-            border-radius: 8px;
-            box-shadow: 0 6px 20px rgba(74, 107, 255, 0.25);
+            padding: 14px 22px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-lg);
             z-index: 1000;
             transform: translateX(150%);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
             font-weight: 500;
+            font-size: 0.9rem;
         }
-        
+
         .toast::before {
             content: '\f00c';
             font-family: 'Font Awesome 6 Free';
             font-weight: 900;
-            margin-right: 8px;
+            margin-right: 10px;
         }
-        
+
         .toast.show {
             transform: translateX(0);
         }
-        
+
+        .copy-indicator {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            opacity: 0;
+            color: var(--primary);
+            transition: opacity 0.3s ease;
+        }
+
+        .copy-card:hover .copy-indicator {
+            opacity: 1;
+        }
+
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
             }
             
             .section-title {
-                font-size: 1.3rem;
+                font-size: 1.2rem;
             }
             
             .card {
-                padding: 16px;
+                padding: 20px;
             }
-        }
-        
-        /* 全局去除下划线 */
-        a {
-            text-decoration: none;
+            
+            .site-title {
+                font-size: 2rem;
+            }
+            
+            .site-subtitle {
+                font-size: 1rem;
+            }
+            
+            .header {
+                padding: 50px 0 40px;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="main">
-        <div class="intro">
-            <!-- 标题区域已清空 -->
+    <div class="container">
+        <div class="header">
+            <h1 class="site-title">wekh's 导航站</h1>
+            <p class="site-subtitle">汇聚实用工具与资源，让网络生活更便捷。期待与更多的人相遇！</p>
         </div>
         
         <div class="section">
-            <h2 class="section-title"><i class="fas fa-tv"></i>Tvbox接口</h2>
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-tv"></i>
+                </div>
+                <h2 class="section-title">Tvbox接口</h2>
+            </div>
             <div class="grid">
-                <div class="card copy-card" id="tvbox" data-clipboard-text="https://tv.wekh.eu.org/tvbox.txt">
-                    <div class="icon"><i class="fas fa-tv"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://tv.wekh.eu.org/tvbox.txt">
+                    <div class="card-icon"><i class="fas fa-tv"></i></div>
+                    <div class="card-content">
                         <div class="card-title">tvbox接口</div>
                         <div class="card-desc">点击复制Tvbox配置接口地址</div>
                     </div>
-                </div>
-                
-                <div class="card copy-card" id="zhibo" data-clipboard-text="https://tv.wekh.eu.org/epg">
-                    <div class="icon"><i class="fas fa-list"></i></div>
-                    <div class="content">
-                        <div class="card-title">EPG DIYP</div>
-                        <div class="card-desc">点击复制EPG DIYP接口地址</div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
                     </div>
                 </div>
                 
-                <div class="card copy-card" id="zhibo" data-clipboard-text="https://tv.wekh.eu.org/pp.xml">
-                    <div class="icon"><i class="fas fa-book"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://tv.wekh.eu.org/epg">
+                    <div class="card-icon"><i class="fas fa-list"></i></div>
+                    <div class="card-content">
+                        <div class="card-title">EPG DIYP</div>
+                        <div class="card-desc">点击复制EPG DIYP接口地址</div>
+                    </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
+                </div>
+                
+                <div class="card copy-card" data-clipboard-text="https://tv.wekh.eu.org/pp.xml">
+                    <div class="card-icon"><i class="fas fa-book"></i></div>
+                    <div class="card-content">
                         <div class="card-title">EPG XML</div>
                         <div class="card-desc">点击复制EPG XML接口地址</div>
+                    </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="section">
-            <h2 class="section-title"><i class="fas fa-server"></i>订阅节点接口</h2>
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h2 class="section-title">订阅节点接口</h2>
+            </div>
             <div class="grid">
-
-                <div class="card copy-card" id="白嫖哥" data-clipboard-text="https://cfxr.eu.org/getSub?host=baipiao.ghjs.dpdns.org">
-                    <div class="icon"><i class="fas fa-rss"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://cfxr.eu.org/getSub?host=baipiao.ghjs.dpdns.org">
+                    <div class="card-icon"><i class="fas fa-rss"></i></div>
+                    <div class="card-content">
                         <div class="card-title">白嫖哥</div>
                         <div class="card-desc">免费节点订阅服务</div>
                     </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
                 </div>
 
-                <div class="card copy-card" id="汇聚订阅" data-clipboard-text="https://mar.haxtop.ggff.net/?sub">
-                    <div class="icon"><i class="fas fa-bell"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://mar.haxtop.ggff.net/?sub">
+                    <div class="card-icon"><i class="fas fa-bell"></i></div>
+                    <div class="card-content">
                         <div class="card-title">汇聚订阅</div>
                         <div class="card-desc">多源节点汇聚订阅</div>
                     </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
                 </div>
                 
-                <div class="card copy-card" id="天诚" data-clipboard-text="https://getsub.classelivre.eu.org/sub?force=auto">
-                    <div class="icon"><i class="fas fa-lock"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://getsub.classelivre.eu.org/sub?force=auto">
+                    <div class="card-icon"><i class="fas fa-lock"></i></div>
+                    <div class="card-content">
                         <div class="card-title">天诚</div>
                         <div class="card-desc">稳定节点订阅服务</div>
                     </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
                 </div>
 
-                <div class="card copy-card" id="周润发" data-clipboard-text="https://d.zrf.me/lsm">
-                    <div class="icon"><i class="fas fa-star"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://d.zrf.me/lsm">
+                    <div class="card-icon"><i class="fas fa-star"></i></div>
+                    <div class="card-content">
                         <div class="card-title">周润发</div>
                         <div class="card-desc">知名节点订阅服务</div>
                     </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
                 </div>
 
-                <div class="card copy-card" id="Snippets" data-clipboard-text="https://wwkh.eu.org/Snippets">
-                    <div class="icon"><i class="fas fa-earth-americas"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://wwkh.eu.org/Snippets">
+                    <div class="card-icon"><i class="fas fa-earth-americas"></i></div>
+                    <div class="card-content">
                         <div class="card-title">Snippets</div>
                         <div class="card-desc">代码片段订阅服务</div>
                     </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
                 </div>  
 
-                <div class="card copy-card" id="自建VLESS" data-clipboard-text="https://wwkh.eu.org/vless">
-                    <div class="icon"><i class="fas fa-shield-alt"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://wwkh.eu.org/vless">
+                    <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="card-content">
                         <div class="card-title">自建VLESS</div>
                         <div class="card-desc">自建VLESS节点订阅</div>
                     </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
+                    </div>
                 </div>
                 
-                <div class="card copy-card" id="自建TROJAN" data-clipboard-text="https://wwkh.eu.org/trojan">
-                    <div class="icon"><i class="fas fa-key"></i></div>
-                    <div class="content">
+                <div class="card copy-card" data-clipboard-text="https://wwkh.eu.org/trojan">
+                    <div class="card-icon"><i class="fas fa-key"></i></div>
+                    <div class="card-content">
                         <div class="card-title">自建TROJAN</div>
                         <div class="card-desc">自建TROJAN节点订阅</div>
+                    </div>
+                    <div class="copy-indicator">
+                        <i class="fas fa-copy"></i>
                     </div>
                 </div>
             </div>
         </div>
 
         <div class="section">
-            <h2 class="section-title"><i class="fas fa-star"></i>相关推荐</h2>
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <h2 class="section-title">相关推荐</h2>
+            </div>
             <div class="grid">
                 <a href="https://pc.wekh.eu.org/" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(1).png" alt="软件站"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(1).png" alt="软件站"></div>
+                    <div class="card-content">
                         <div class="card-title">wekh's 软件站</div>
                         <div class="card-desc">收集一些常用软件</div>
                     </div>
                 </a>
                 
                 <a href="https://zh.z-lib.today" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(2).png" alt="Z-Library"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(2).png" alt="Z-Library"></div>
+                    <div class="card-content">
                         <div class="card-title">Z-Library</div>
                         <div class="card-desc">世界上最大的电子图书馆</div>
                     </div>
                 </a>
                 
                 <a href="https://wfy.lanzout.com/b0izqfjwb" target="_blank" class="card link-card" data-password="123456">
-                    <div class="icon"><img src="img/gate(3).png" alt="酷9直播"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(3).png" alt="酷9直播"></div>
+                    <div class="card-content">
                         <div class="card-title">酷9直播</div>
                         <div class="card-desc">电视直播空壳，自己配置直播源</div>
                         <div class="password" title="点击复制密码"><i class="fas fa-lock"></i>密码: 123456</div>
@@ -436,48 +467,48 @@
                 </a>
                 
                 <a href="https://chat.wekh.eu.org/" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(4).png" alt="NextChat"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(4).png" alt="NextChat"></div>
+                    <div class="card-content">
                         <div class="card-title">NextChat</div>
                         <div class="card-desc">自建免费GPT-4o</div>
                     </div>
                 </a>
                 
                 <a href="https://tvbox.wekh.eu.org/" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(5).png" alt="影视TV"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(5).png" alt="影视TV"></div>
+                    <div class="card-content">
                         <div class="card-title">影视TV</div>
                         <div class="card-desc">免费观看电影软件</div>
                     </div>
                 </a>
                 
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/v2rayN-windows-64-SelfContained.zip" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(6).png" alt="v2rayN"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(6).png" alt="v2rayN"></div>
+                    <div class="card-content">
                         <div class="card-title">v2rayN</div>
                         <div class="card-desc">使用Xray core的桌面端通用代理软件</div>
                     </div>
                 </a>
                 
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/v2rayNG.apk" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(7).png" alt="v2rayNG"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(7).png" alt="v2rayNG"></div>
+                    <div class="card-content">
                         <div class="card-title">v2rayNG</div>
                         <div class="card-desc">使用Xray core的安卓端通用代理软件</div>
                     </div>
                 </a>
                 
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/NekoBox.apk" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(8).png" alt="NekoBox"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(8).png" alt="NekoBox"></div>
+                    <div class="card-content">
                         <div class="card-title">NekoBox</div>
                         <div class="card-desc">使用sing-box的安卓端通用代理软件</div>
                     </div>
                 </a>
                 
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/GitHubDesktop-Windows-x64.exe" target="_blank" class="card link-card">
-                    <div class="icon"><img src="img/gate(9).png" alt="GitHub Desktop"></div>
-                    <div class="content">
+                    <div class="card-icon"><img src="img/gate(9).png" alt="GitHub Desktop"></div>
+                    <div class="card-content">
                         <div class="card-title">GitHub Desktop汉化版本</div>
                         <div class="card-desc">安装即是中文版</div>
                     </div>
@@ -492,14 +523,13 @@
     
     <div id="toast" class="toast">复制成功！</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.10/dist/clipboard.min.js"></script>
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             // 复制功能
             new ClipboardJS('.copy-card', {
                 text: function(trigger) {
-                    return $(trigger).data('clipboard-text');
+                    return trigger.getAttribute('data-clipboard-text');
                 }
             }).on('success', function(e) {
                 showToast('复制成功！');
@@ -509,23 +539,22 @@
             });
             
             // 处理带密码的链接
-            $('.link-card[data-password]').each(function() {
-                const $card = $(this);
-                const password = $card.data('password');
-                const $password = $card.find('.password');
+            document.querySelectorAll('.link-card[data-password]').forEach(function(card) {
+                const password = card.getAttribute('data-password');
+                const passwordElement = card.querySelector('.password');
                 
                 // 点击密码时复制
-                $password.on('click', function(e) {
+                passwordElement.addEventListener('click', function(e) {
                     e.stopPropagation();
                     copyToClipboard(password, '密码已复制');
                 });
                 
                 // 点击整个卡片时打开链接并复制密码
-                $card.on('click', function(e) {
-                    if (!$(e.target).closest('.password').length) {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.closest('.password')) {
                         e.preventDefault();
                         copyToClipboard(password, '密码已复制，正在打开链接...', function() {
-                            window.open($card.attr('href'), '_blank');
+                            window.open(card.getAttribute('href'), '_blank');
                         });
                     }
                 });
@@ -545,10 +574,11 @@
             
             // 显示通知
             function showToast(message) {
-                const $toast = $('#toast');
-                $toast.text(message).addClass('show');
+                const toast = document.getElementById('toast');
+                toast.textContent = message;
+                toast.classList.add('show');
                 setTimeout(function() {
-                    $toast.removeClass('show');
+                    toast.classList.remove('show');
                 }, 2000);
             }
         });
