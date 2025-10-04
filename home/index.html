@@ -14,12 +14,18 @@
     <style>
         :root {
             --primary-color: #4a6bff;
+            --primary-light: rgba(74, 107, 255, 0.1);
             --accent-color: #00a8ff;
+            --accent-light: rgba(0, 168, 255, 0.1);
             --text-color: #333;
             --text-light: #666;
             --border-color: #e0e0e0;
             --card-bg: #fff;
             --bg-color: #f5f7fa;
+            --gradient-start: #f8fafc;
+            --gradient-end: #eef2f6;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            --shadow-hover: 0 8px 24px rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -30,10 +36,11 @@
         }
         
         body {
-            background-color: var(--bg-color);
+            background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
             color: var(--text-color);
             line-height: 1.6;
             min-height: 100vh;
+            position: relative;
         }
         
         .main {
@@ -43,12 +50,7 @@
         }
         
         .section {
-            margin-bottom: 30px;
-        }
-        
-        .container {
-            width: 100%;
-            padding: 0 15px;
+            margin-bottom: 40px;
         }
         
         .intro {
@@ -56,18 +58,25 @@
             padding: 20px 0 30px;
         }
         
-        .title {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: var(--primary-color);
-            font-weight: 500;
-        }
-        
         .section-title {
             font-size: 1.5rem;
-            margin: 0 0 20px 10px;
+            margin: 0 0 25px 10px;
             color: var(--text-color);
-            font-weight: 500;
+            font-weight: 600;
+            position: relative;
+            padding-left: 15px;
+        }
+        
+        .section-title::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 4px;
+            height: 20px;
+            background: linear-gradient(to bottom, var(--primary-color), var(--accent-color));
+            border-radius: 2px;
         }
         
         .section-title i {
@@ -75,79 +84,114 @@
             color: var(--primary-color);
         }
         
-        .section-title span {
-            color: var(--accent-color);
-        }
-        
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
             margin: 0 10px;
         }
         
         .card {
             background: var(--card-bg);
-            border-radius: 10px;
-            padding: 15px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
-            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.8);
             transition: all 0.3s ease;
             display: flex;
             align-items: center;
-            min-height: 90px;
-            text-decoration: none; /* 去除链接下划线 */
+            min-height: 100px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
         
         .card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(74, 107, 255, 0.2);
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
         }
         
         .copy-card {
             cursor: pointer;
-            text-align: center;
-            justify-content: center;
+            position: relative;
         }
         
         .copy-card:hover {
-            background: rgba(74, 107, 255, 0.05);
+            background: rgba(74, 107, 255, 0.03);
         }
         
-        /* 接口卡片图标样式（保留色块） */
+        .copy-card::after {
+            content: '\f0c5';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: var(--primary-color);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .copy-card:hover::after {
+            opacity: 1;
+        }
+        
+        /* 接口卡片图标样式 */
         .copy-card .icon {
             width: 50px;
             height: 50px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-right: 15px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 168, 255, 0.1);
-            color: var(--primary-color);
-            font-size: 24px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            color: white;
+            font-size: 20px;
+            box-shadow: 0 4px 8px rgba(74, 107, 255, 0.15);
         }
         
-        /* 推荐卡片图标样式（无背景色块） */
+        /* 推荐卡片图标样式 */
         .link-card .icon {
             width: 50px;
             height: 50px;
-            border-radius: 8px;
+            border-radius: 10px;
             margin-right: 15px;
             flex-shrink: 0;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--primary-color);
-            font-size: 24px;
+            font-size: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(74, 107, 255, 0.1);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
         }
         
         .icon img {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 70%;
+            max-height: 70%;
             object-fit: contain;
+            border-radius: 6px;
         }
         
         .content {
@@ -157,12 +201,12 @@
         
         .card-title {
             font-size: 1.1rem;
-            font-weight: 500;
-            margin-bottom: 5px;
+            font-weight: 600;
+            margin-bottom: 8px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            color: var(--text-color); /* 确保文字颜色一致 */
+            color: var(--text-color);
         }
         
         .card-desc {
@@ -172,29 +216,48 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-height: 1.5;
         }
         
         .password {
             font-size: 0.8rem;
             color: var(--accent-color);
-            background: rgba(0, 168, 255, 0.1);
-            padding: 2px 6px;
+            background: var(--accent-light);
+            padding: 4px 8px;
             border-radius: 4px;
-            display: inline-block;
-            margin-top: 5px;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 8px;
             cursor: pointer;
-            text-decoration: none; /* 去除密码下划线 */
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        
+        .password:hover {
+            background: rgba(0, 168, 255, 0.15);
         }
         
         .password i {
-            margin-right: 3px;
+            margin-right: 5px;
         }
         
         .footer {
             text-align: center;
-            padding: 30px 0;
+            padding: 40px 0 20px;
             color: var(--text-light);
             font-size: 0.9rem;
+            position: relative;
+        }
+        
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border-color), transparent);
         }
         
         /* Toast通知 */
@@ -202,14 +265,24 @@
             position: fixed;
             top: 20px;
             right: 20px;
-            background: var(--primary-color);
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
             color: white;
             padding: 12px 20px;
-            border-radius: 5px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            box-shadow: 0 6px 20px rgba(74, 107, 255, 0.25);
             z-index: 1000;
             transform: translateX(150%);
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .toast::before {
+            content: '\f00c';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            margin-right: 8px;
         }
         
         .toast.show {
@@ -221,12 +294,12 @@
                 grid-template-columns: 1fr;
             }
             
-            .title {
-                font-size: 1.8rem;
-            }
-            
             .section-title {
                 font-size: 1.3rem;
+            }
+            
+            .card {
+                padding: 16px;
             }
         }
         
@@ -240,7 +313,7 @@
 <body>
     <div class="main">
         <div class="intro">
-            <h1 class="title"></h1>
+            <!-- 标题区域已清空 -->
         </div>
         
         <div class="section">
@@ -250,6 +323,7 @@
                     <div class="icon"><i class="fas fa-tv"></i></div>
                     <div class="content">
                         <div class="card-title">tvbox接口</div>
+                        <div class="card-desc">点击复制Tvbox配置接口地址</div>
                     </div>
                 </div>
                 
@@ -257,6 +331,7 @@
                     <div class="icon"><i class="fas fa-list"></i></div>
                     <div class="content">
                         <div class="card-title">EPG DIYP</div>
+                        <div class="card-desc">点击复制EPG DIYP接口地址</div>
                     </div>
                 </div>
                 
@@ -264,6 +339,7 @@
                     <div class="icon"><i class="fas fa-book"></i></div>
                     <div class="content">
                         <div class="card-title">EPG XML</div>
+                        <div class="card-desc">点击复制EPG XML接口地址</div>
                     </div>
                 </div>
             </div>
@@ -277,6 +353,7 @@
                     <div class="icon"><i class="fas fa-rss"></i></div>
                     <div class="content">
                         <div class="card-title">白嫖哥</div>
+                        <div class="card-desc">免费节点订阅服务</div>
                     </div>
                 </div>
 
@@ -284,6 +361,7 @@
                     <div class="icon"><i class="fas fa-bell"></i></div>
                     <div class="content">
                         <div class="card-title">汇聚订阅</div>
+                        <div class="card-desc">多源节点汇聚订阅</div>
                     </div>
                 </div>
                 
@@ -291,6 +369,7 @@
                     <div class="icon"><i class="fas fa-lock"></i></div>
                     <div class="content">
                         <div class="card-title">天诚</div>
+                        <div class="card-desc">稳定节点订阅服务</div>
                     </div>
                 </div>
 
@@ -298,6 +377,7 @@
                     <div class="icon"><i class="fas fa-star"></i></div>
                     <div class="content">
                         <div class="card-title">周润发</div>
+                        <div class="card-desc">知名节点订阅服务</div>
                     </div>
                 </div>
 
@@ -305,6 +385,7 @@
                     <div class="icon"><i class="fas fa-earth-americas"></i></div>
                     <div class="content">
                         <div class="card-title">Snippets</div>
+                        <div class="card-desc">代码片段订阅服务</div>
                     </div>
                 </div>  
 
@@ -312,6 +393,7 @@
                     <div class="icon"><i class="fas fa-shield-alt"></i></div>
                     <div class="content">
                         <div class="card-title">自建VLESS</div>
+                        <div class="card-desc">自建VLESS节点订阅</div>
                     </div>
                 </div>
                 
@@ -319,6 +401,7 @@
                     <div class="icon"><i class="fas fa-key"></i></div>
                     <div class="content">
                         <div class="card-title">自建TROJAN</div>
+                        <div class="card-desc">自建TROJAN节点订阅</div>
                     </div>
                 </div>
             </div>
