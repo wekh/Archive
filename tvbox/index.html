@@ -263,7 +263,7 @@
             opacity: 1;
         }
 
-        /* 新增的复制卡片样式 */
+        /* 修复后的复制卡片样式 */
         .copy-section {
             margin-bottom: 30px;
         }
@@ -289,14 +289,16 @@
             text-align: center;
             min-height: 100px;
             position: relative;
+            overflow: hidden;
         }
 
         .copy-card:hover {
-            transform: translateY(-3px);
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
             border-color: var(--primary-light);
         }
 
+        /* 修复悬停线条对齐问题 */
         .copy-card::before {
             content: '';
             position: absolute;
@@ -449,7 +451,7 @@
             <p class="site-subtitle">海量高清影视资源 · 多平台支持 · 极速流畅体验</p>
         </div>
         
-        <!-- 新增的复制卡片区域 -->
+        <!-- 修复后的复制卡片区域 -->
         <div class="section copy-section">
             <div class="section-header">
                 <div class="section-icon">
