@@ -263,15 +263,113 @@
             opacity: 1;
         }
 
+        /* 新增的复制卡片样式 */
+        .copy-section {
+            margin-bottom: 30px;
+        }
+
+        .copy-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+
+        .copy-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 100px;
+            position: relative;
+        }
+
+        .copy-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .copy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .copy-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .copy-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .copy-url {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .copy-tooltip {
+            position: absolute;
+            bottom: -35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--text);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .copy-tooltip::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid var(--text);
+        }
+
+        .copy-card.copied .copy-tooltip {
+            opacity: 1;
+        }
+
         /* 响应式设计 */
         @media (max-width: 1200px) {
-            .grid {
+            .grid, .copy-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
         
         @media (max-width: 992px) {
-            .grid {
+            .grid, .copy-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
@@ -293,7 +391,7 @@
                 font-size: 1.2rem;
             }
             
-            .grid {
+            .grid, .copy-grid {
                 grid-template-columns: repeat(2, 1fr);
                 gap: 15px;
             }
@@ -308,10 +406,15 @@
                 height: 45px;
                 font-size: 18px;
             }
+            
+            .copy-card {
+                padding: 12px;
+                min-height: 90px;
+            }
         }
         
         @media (max-width: 576px) {
-            .grid {
+            .grid, .copy-grid {
                 grid-template-columns: 1fr;
                 max-width: 320px;
                 margin: 0 auto;
@@ -330,6 +433,11 @@
                 padding: 16px;
                 min-height: 180px;
             }
+            
+            .copy-card {
+                padding: 10px;
+                min-height: 80px;
+            }
         }
     </style>
 </head>
@@ -339,6 +447,41 @@
         <div class="header">
             <h1 class="site-title">影视TV</h1>
             <p class="site-subtitle">海量高清影视资源 · 多平台支持 · 极速流畅体验</p>
+        </div>
+        
+        <!-- 新增的复制卡片区域 -->
+        <div class="section copy-section">
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="fas fa-link"></i>
+                </div>
+                <h2 class="section-title">接口地址</h2>
+            </div>
+            <div class="copy-grid">
+                <div class="copy-card" data-url="http://www.饭太硬.net/tv">
+                    <div class="copy-name">饭太硬</div>
+                    <div class="copy-url">http://www.饭太硬.net/tv</div>
+                    <div class="copy-tooltip">已复制到剪贴板</div>
+                </div>
+                
+                <div class="copy-card" data-url="http://mitvbox.xyz/小米/DEMO.json">
+                    <div class="copy-name">小米</div>
+                    <div class="copy-url">http://mitvbox.xyz/小米/DEMO.json</div>
+                    <div class="copy-tooltip">已复制到剪贴板</div>
+                </div>
+                
+                <div class="copy-card" data-url="http://ok321.top/tv">
+                    <div class="copy-name">OK321</div>
+                    <div class="copy-url">http://ok321.top/tv</div>
+                    <div class="copy-tooltip">已复制到剪贴板</div>
+                </div>
+                
+                <div class="copy-card" data-url="http://肥猫.com">
+                    <div class="copy-name">肥猫</div>
+                    <div class="copy-url">http://肥猫.com</div>
+                    <div class="copy-tooltip">已复制到剪贴板</div>
+                </div>
+            </div>
         </div>
         
         <div class="section">
@@ -501,5 +644,41 @@
             <p>© 2024 影视TV - 所有资源仅供学习交流使用</p>
         </div>
     </div>
+
+    <script>
+        // 复制卡片功能
+        document.querySelectorAll('.copy-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const url = this.getAttribute('data-url');
+                
+                // 使用现代 Clipboard API
+                navigator.clipboard.writeText(url).then(() => {
+                    // 显示复制成功提示
+                    this.classList.add('copied');
+                    
+                    // 3秒后移除提示
+                    setTimeout(() => {
+                        this.classList.remove('copied');
+                    }, 2000);
+                }).catch(err => {
+                    // 如果 Clipboard API 失败，使用备用方法
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    
+                    // 显示复制成功提示
+                    this.classList.add('copied');
+                    
+                    // 3秒后移除提示
+                    setTimeout(() => {
+                        this.classList.remove('copied');
+                    }, 2000);
+                });
+            });
+        });
+    </script>
 </body>
 </html>
