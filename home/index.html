@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>wekh's 导航站</title>
     <meta name="description" content="wekh的个人网站，期待与更多的人相遇！">
+    <link rel="icon" href="img/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -119,6 +120,8 @@
             position: relative;
             overflow: hidden;
             border: 1px solid var(--border);
+            min-height: 120px;
+            height: 100%;
         }
 
         .card:hover {
@@ -164,16 +167,51 @@
         .card-content {
             flex: 1;
             min-width: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
         }
 
         .card-title {
             font-size: 1.15rem;
             font-weight: 600;
-            margin-bottom: 8px;
             color: var(--text);
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            flex: 1;
+        }
+
+        .password-tag {
+            font-size: 0.75rem;
+            color: var(--accent);
+            background: rgba(168, 143, 255, 0.1);
+            padding: 4px 8px;
+            border-radius: 6px;
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border: 1px solid rgba(168, 143, 255, 0.2);
+        }
+
+        .password-tag:hover {
+            background: rgba(168, 143, 255, 0.15);
+            transform: translateY(-1px);
+        }
+
+        .password-tag i {
+            margin-right: 4px;
+            font-size: 0.7rem;
         }
 
         .card-desc {
@@ -184,29 +222,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
-        }
-
-        .password {
-            font-size: 0.85rem;
-            color: var(--accent);
-            background: rgba(168, 143, 255, 0.08);
-            padding: 6px 10px;
-            border-radius: 8px;
-            display: inline-flex;
-            align-items: center;
-            margin-top: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        .password:hover {
-            background: rgba(168, 143, 255, 0.12);
-        }
-
-        .password i {
-            margin-right: 6px;
-            font-size: 0.75rem;
+            flex: 1;
         }
 
         .footer {
@@ -279,6 +295,7 @@
             
             .card {
                 padding: 20px;
+                min-height: 110px;
             }
             
             .site-title {
@@ -291,6 +308,16 @@
             
             .header {
                 padding: 50px 0 40px;
+            }
+            
+            .card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .password-tag {
+                margin-left: 0;
+                margin-top: 5px;
             }
         }
     </style>
@@ -314,7 +341,9 @@
                 <div class="card copy-card" data-clipboard-text="https://tv.wekh.eu.org/tvbox.txt">
                     <div class="card-icon"><i class="fas fa-tv"></i></div>
                     <div class="card-content">
-                        <div class="card-title">tvbox接口</div>
+                        <div class="card-header">
+                            <div class="card-title">tvbox接口</div>
+                        </div>
                         <div class="card-desc">点击复制Tvbox配置接口地址</div>
                     </div>
                     <div class="copy-indicator">
@@ -325,7 +354,9 @@
                 <div class="card copy-card" data-clipboard-text="https://tv.wekh.eu.org/epg">
                     <div class="card-icon"><i class="fas fa-list"></i></div>
                     <div class="card-content">
-                        <div class="card-title">EPG DIYP</div>
+                        <div class="card-header">
+                            <div class="card-title">EPG DIYP</div>
+                        </div>
                         <div class="card-desc">点击复制EPG DIYP接口地址</div>
                     </div>
                     <div class="copy-indicator">
@@ -336,7 +367,9 @@
                 <div class="card copy-card" data-clipboard-text="https://tv.wekh.eu.org/pp.xml">
                     <div class="card-icon"><i class="fas fa-book"></i></div>
                     <div class="card-content">
-                        <div class="card-title">EPG XML</div>
+                        <div class="card-header">
+                            <div class="card-title">EPG XML</div>
+                        </div>
                         <div class="card-desc">点击复制EPG XML接口地址</div>
                     </div>
                     <div class="copy-indicator">
@@ -357,7 +390,9 @@
                 <div class="card copy-card" data-clipboard-text="https://cfxr.eu.org/getSub?host=baipiao.ghjs.dpdns.org">
                     <div class="card-icon"><i class="fas fa-rss"></i></div>
                     <div class="card-content">
-                        <div class="card-title">白嫖哥</div>
+                        <div class="card-header">
+                            <div class="card-title">白嫖哥</div>
+                        </div>
                         <div class="card-desc">免费节点订阅服务</div>
                     </div>
                     <div class="copy-indicator">
@@ -368,7 +403,9 @@
                 <div class="card copy-card" data-clipboard-text="https://mar.haxtop.ggff.net/?sub">
                     <div class="card-icon"><i class="fas fa-bell"></i></div>
                     <div class="card-content">
-                        <div class="card-title">汇聚订阅</div>
+                        <div class="card-header">
+                            <div class="card-title">汇聚订阅</div>
+                        </div>
                         <div class="card-desc">多源节点汇聚订阅</div>
                     </div>
                     <div class="copy-indicator">
@@ -379,7 +416,9 @@
                 <div class="card copy-card" data-clipboard-text="https://getsub.classelivre.eu.org/sub?force=auto">
                     <div class="card-icon"><i class="fas fa-lock"></i></div>
                     <div class="card-content">
-                        <div class="card-title">天诚</div>
+                        <div class="card-header">
+                            <div class="card-title">天诚</div>
+                        </div>
                         <div class="card-desc">稳定节点订阅服务</div>
                     </div>
                     <div class="copy-indicator">
@@ -390,7 +429,9 @@
                 <div class="card copy-card" data-clipboard-text="https://d.zrf.me/lsm">
                     <div class="card-icon"><i class="fas fa-star"></i></div>
                     <div class="card-content">
-                        <div class="card-title">周润发</div>
+                        <div class="card-header">
+                            <div class="card-title">周润发</div>
+                        </div>
                         <div class="card-desc">知名节点订阅服务</div>
                     </div>
                     <div class="copy-indicator">
@@ -401,7 +442,9 @@
                 <div class="card copy-card" data-clipboard-text="https://wwkh.eu.org/Snippets">
                     <div class="card-icon"><i class="fas fa-earth-americas"></i></div>
                     <div class="card-content">
-                        <div class="card-title">Snippets</div>
+                        <div class="card-header">
+                            <div class="card-title">Snippets</div>
+                        </div>
                         <div class="card-desc">代码片段订阅服务</div>
                     </div>
                     <div class="copy-indicator">
@@ -412,7 +455,9 @@
                 <div class="card copy-card" data-clipboard-text="https://wwkh.eu.org/vless">
                     <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
                     <div class="card-content">
-                        <div class="card-title">自建VLESS</div>
+                        <div class="card-header">
+                            <div class="card-title">自建VLESS</div>
+                        </div>
                         <div class="card-desc">自建VLESS节点订阅</div>
                     </div>
                     <div class="copy-indicator">
@@ -423,7 +468,9 @@
                 <div class="card copy-card" data-clipboard-text="https://wwkh.eu.org/trojan">
                     <div class="card-icon"><i class="fas fa-key"></i></div>
                     <div class="card-content">
-                        <div class="card-title">自建TROJAN</div>
+                        <div class="card-header">
+                            <div class="card-title">自建TROJAN</div>
+                        </div>
                         <div class="card-desc">自建TROJAN节点订阅</div>
                     </div>
                     <div class="copy-indicator">
@@ -444,7 +491,9 @@
                 <a href="https://pc.wekh.eu.org/" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(1).png" alt="软件站"></div>
                     <div class="card-content">
-                        <div class="card-title">wekh's 软件站</div>
+                        <div class="card-header">
+                            <div class="card-title">wekh's 软件站</div>
+                        </div>
                         <div class="card-desc">收集一些常用软件</div>
                     </div>
                 </a>
@@ -452,7 +501,9 @@
                 <a href="https://zh.z-lib.today" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(2).png" alt="Z-Library"></div>
                     <div class="card-content">
-                        <div class="card-title">Z-Library</div>
+                        <div class="card-header">
+                            <div class="card-title">Z-Library</div>
+                        </div>
                         <div class="card-desc">世界上最大的电子图书馆</div>
                     </div>
                 </a>
@@ -460,16 +511,20 @@
                 <a href="https://wfy.lanzout.com/b0izqfjwb" target="_blank" class="card link-card" data-password="123456">
                     <div class="card-icon"><img src="img/gate(3).png" alt="酷9直播"></div>
                     <div class="card-content">
-                        <div class="card-title">酷9直播</div>
+                        <div class="card-header">
+                            <div class="card-title">酷9直播</div>
+                            <div class="password-tag" title="点击复制密码"><i class="fas fa-lock"></i>密码: 123456</div>
+                        </div>
                         <div class="card-desc">电视直播空壳，自己配置直播源</div>
-                        <div class="password" title="点击复制密码"><i class="fas fa-lock"></i>密码: 123456</div>
                     </div>
                 </a>
                 
                 <a href="https://chat.wekh.eu.org/" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(4).png" alt="NextChat"></div>
                     <div class="card-content">
-                        <div class="card-title">NextChat</div>
+                        <div class="card-header">
+                            <div class="card-title">NextChat</div>
+                        </div>
                         <div class="card-desc">自建免费GPT-4o</div>
                     </div>
                 </a>
@@ -477,7 +532,9 @@
                 <a href="https://tvbox.wekh.eu.org/" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(5).png" alt="影视TV"></div>
                     <div class="card-content">
-                        <div class="card-title">影视TV</div>
+                        <div class="card-header">
+                            <div class="card-title">影视TV</div>
+                        </div>
                         <div class="card-desc">免费观看电影软件</div>
                     </div>
                 </a>
@@ -485,7 +542,9 @@
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/v2rayN-windows-64-SelfContained.zip" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(6).png" alt="v2rayN"></div>
                     <div class="card-content">
-                        <div class="card-title">v2rayN</div>
+                        <div class="card-header">
+                            <div class="card-title">v2rayN</div>
+                        </div>
                         <div class="card-desc">使用Xray core的桌面端通用代理软件</div>
                     </div>
                 </a>
@@ -493,7 +552,9 @@
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/v2rayNG.apk" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(7).png" alt="v2rayNG"></div>
                     <div class="card-content">
-                        <div class="card-title">v2rayNG</div>
+                        <div class="card-header">
+                            <div class="card-title">v2rayNG</div>
+                        </div>
                         <div class="card-desc">使用Xray core的安卓端通用代理软件</div>
                     </div>
                 </a>
@@ -501,7 +562,9 @@
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/NekoBox.apk" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(8).png" alt="NekoBox"></div>
                     <div class="card-content">
-                        <div class="card-title">NekoBox</div>
+                        <div class="card-header">
+                            <div class="card-title">NekoBox</div>
+                        </div>
                         <div class="card-desc">使用sing-box的安卓端通用代理软件</div>
                     </div>
                 </a>
@@ -509,7 +572,9 @@
                 <a href="https://wwkh.eu.org/https://github.com/wekh/Archive/releases/download/latest/GitHubDesktop-Windows-x64.exe" target="_blank" class="card link-card">
                     <div class="card-icon"><img src="img/gate(9).png" alt="GitHub Desktop"></div>
                     <div class="card-content">
-                        <div class="card-title">GitHub Desktop汉化版本</div>
+                        <div class="card-header">
+                            <div class="card-title">GitHub Desktop汉化版本</div>
+                        </div>
                         <div class="card-desc">安装即是中文版</div>
                     </div>
                 </a>
@@ -541,17 +606,17 @@
             // 处理带密码的链接
             document.querySelectorAll('.link-card[data-password]').forEach(function(card) {
                 const password = card.getAttribute('data-password');
-                const passwordElement = card.querySelector('.password');
+                const passwordTag = card.querySelector('.password-tag');
                 
-                // 点击密码时复制
-                passwordElement.addEventListener('click', function(e) {
+                // 点击密码标签时复制
+                passwordTag.addEventListener('click', function(e) {
                     e.stopPropagation();
                     copyToClipboard(password, '密码已复制');
                 });
                 
                 // 点击整个卡片时打开链接并复制密码
                 card.addEventListener('click', function(e) {
-                    if (!e.target.closest('.password')) {
+                    if (!e.target.closest('.password-tag')) {
                         e.preventDefault();
                         copyToClipboard(password, '密码已复制，正在打开链接...', function() {
                             window.open(card.getAttribute('href'), '_blank');
