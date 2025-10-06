@@ -4,24 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>北京时间</title>
-
-<!-- Favicon: 圆角矩形钟表，中间加长指针 -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <link rel="icon" type="image/x-icon" href="favicon.ico">
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
-<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>
-  <rect width='64' height='64' rx='12' ry='12' fill='black' stroke='white' stroke-width='2'/>
-  <line x1='32' y1='32' x2='32' y2='12' stroke='white' stroke-width='3' stroke-linecap='round'/>
-  <line x1='32' y1='32' x2='52' y2='32' stroke='white' stroke-width='2' stroke-linecap='round'/>
-  <circle cx='32' cy='32' r='2' fill='white'/>
-</svg>">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-html, body{height:100%;width:100%;}
+html,body{height:100%;width:100%;}
 body{
     font-family:"Noto Sans SC",sans-serif;
     background:#000;
-    color:#ccc; /* 浅灰色文字 */
+    color:#ccc;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -29,39 +24,11 @@ body{
     text-align:center;
     padding:2vw;
 }
-
-.date{
-    font-weight:300;
-    margin-bottom:1vh;
-    font-size:clamp(1.5rem,5vw,4rem);
-}
-
-.time{
-    font-weight:700;
-    margin-bottom:2vh;
-    font-size:clamp(5rem,15vw,20rem);
-}
-
-.week{
-    font-weight:400;
-    margin-bottom:3vh;
-    color:#bbb; /* 稍深一点的灰色 */
-    font-size:clamp(1.2rem,4vw,3rem);
-}
-
-.footer{
-    position:fixed;
-    bottom:1vh;
-    width:100%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:0.5rem;
-    font-size:clamp(0.8rem,3vw,1.5rem);
-    color:#888; /* 底部信息灰色 */
-}
-
-.dot{width:10px;height:10px;border-radius:50%;background:#666;transition:.3s;}
+.date{font-weight:300;margin-bottom:1vh;font-size:clamp(1.5rem,5vw,4rem);}
+.time{font-weight:700;margin-bottom:2vh;font-size:clamp(5rem,15vw,20rem);}
+.week{font-weight:400;margin-bottom:3vh;color:#bbb;font-size:clamp(1.2rem,4vw,3rem);}
+.footer{position:fixed;bottom:1vh;width:100%;display:flex;justify-content:center;align-items:center;gap:0.5rem;font-size:clamp(0.8rem,3vw,1.5rem);color:#888;}
+.dot{width:10px;height:10px;border-radius:50%;background:#666;transition:.3;}
 </style>
 </head>
 <body>
@@ -71,7 +38,7 @@ body{
 <div class="footer"><div class="dot" id="dot"></div><span id="src">加载中...</span></div>
 
 <script>
-const SUNING='https://quan.suning.com/getSysTime.do';
+const SUNING='/api/time'; // 使用 Vercel serverless 代理
 const CACHE_KEY='suning_cache_v1';
 const CACHE_MAX_AGE=10*60*1000;
 
@@ -83,25 +50,24 @@ const dEl=document.getElementById('date'),
 
 let networkOffset=0;
 
-// 设置状态指示点
 function setDot(on){ dot.style.background = on?'#0f0':'#666'; }
-
-// 本地缓存
-function saveCache(sysTime2){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({s: sysTime2, ts: Date.now()})); }catch{} }
+function saveCache(sysTime2){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({: sysTime2, ts: Date.now()})); }catch{} }
 function loadCache(){ try{ const raw=localStorage.getItem(CACHE_KEY); return raw?JSON.parse(raw):null; }catch{return null;} }
 
-// 获取苏宁时间
 async function fetchSuning(retries=3,delay=600){
   for(let i=0;i<retries;i++){
     try{
-      const r=await fetch(SUNING,{cache:'no-store'}); if(!r.ok) throw 0;
-      const j=await r.json(); if(j?.sysTime2) return j.sysTime2;
-    }catch{} if(i<retries-1) await new Promise(r=>setTimeout(r,delay));
+      const r=await fetch(SUNING,{cache:'no-store'});
+      if(!r.ok) throw 0;
+      const j=await r.json();
+      if(j?.sysTime2) return j.sysTime2;
+      // 如果返回错误也尝试下次
+    }catch{} 
+    if(i<retries-1) await new Promise(r=>setTimeout(r,delay));
   }
   throw new Error('fetch fail');
 }
 
-// 初始化时间
 async function initTime(){
   const cache=loadCache();
   if(cache && Date.now()-cache.ts<CACHE_MAX_AGE){
@@ -122,7 +88,6 @@ async function initTime(){
   }catch{}
 }
 
-// 更新时间显示
 function tick(){
   const now = Date.now() + networkOffset;
   const displayTime = new Date(now);
@@ -136,7 +101,6 @@ function tick(){
   wEl.textContent=weekday;
 }
 
-// 定期同步苏宁时间
 async function periodicSync(){
   try{
     const sys=await fetchSuning();
