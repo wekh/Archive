@@ -4,11 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>北京时间</title>
+
+<!-- PWA 支持 -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#000000">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
+
+<!-- Favicon: 圆角矩形钟表，中间加长指针 -->
 <link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,
+<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64'>
+  <rect width='64' height='64' rx='12' ry='12' fill='black' stroke='white' stroke-width='2'/>
+  <line x1='32' y1='32' x2='32' y2='12' stroke='white' stroke-width='3' stroke-linecap='round'/>
+  <line x1='32' y1='32' x2='52' y2='32' stroke='white' stroke-width='2' stroke-linecap='round'/>
+  <circle cx='32' cy='32' r='2' fill='white'/>
+</svg>">
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -24,6 +35,7 @@ body{
     text-align:center;
     padding:2vw;
 }
+
 .date{font-weight:300;margin-bottom:1vh;font-size:clamp(1.5rem,5vw,4rem);}
 .time{font-weight:700;margin-bottom:2vh;font-size:clamp(5rem,15vw,20rem);}
 .week{font-weight:400;margin-bottom:3vh;color:#bbb;font-size:clamp(1.2rem,4vw,3rem);}
@@ -38,9 +50,8 @@ body{
 <div class="footer"><div class="dot" id="dot"></div><span id="src">加载中...</span></div>
 
 <script>
-const SUNING='/api/time'; // 使用 Vercel serverless 代理
-const CACHE_KEY='suning_cache_v1';
-const CACHE_MAX_AGE=10*60*1000;
+const TIME_API = 'https://api.m.taobao.com/rest/api3.do?api=mtop.common.getTimestamp';
+let networkOffset = 0;
 
 const dEl=document.getElementById('date'),
       tEl=document.getElementById('time'),
@@ -48,74 +59,52 @@ const dEl=document.getElementById('date'),
       dot=document.getElementById('dot'),
       srcEl=document.getElementById('src');
 
-let networkOffset=0;
+const CACHE_KEY='time_cache_v1';
+const CACHE_MAX_AGE=10*60*1000;
 
 function setDot(on){ dot.style.background = on?'#0f0':'#666'; }
-function saveCache(sysTime2){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({: sysTime2, ts: Date.now()})); }catch{} }
-function loadCache(){ try{ const raw=localStorage.getItem(CACHE_KEY); return raw?JSON.parse(raw):null; }catch{return null;} }
 
-async function fetchSuning(retries=3,delay=600){
-  for(let i=0;i<retries;i++){
-    try{
-      const r=await fetch(SUNING,{cache:'no-store'});
-      if(!r.ok) throw 0;
-      const j=await r.json();
-      if(j?.sysTime2) return j.sysTime2;
-      // 如果返回错误也尝试下次
-    }catch{} 
-    if(i<retries-1) await new Promise(r=>setTimeout(r,delay));
-  }
-  throw new Error('fetch fail');
-}
+async function initTime() {
+    // 先用缓存或本地时间
+    const cache = JSON.parse(localStorage.getItem(CACHE_KEY)||'null');
+    if(cache && Date.now()-cache.ts<CACHE_MAX_AGE){
+        networkOffset = cache.offset;
+        setDot(true);
+        srcEl.textContent='时间来源：缓存/本地';
+    } else {
+        networkOffset = 0;
+        setDot(false);
+        srcEl.textContent='时间来源：本地时间';
+    }
 
-async function initTime(){
-  const cache=loadCache();
-  if(cache && Date.now()-cache.ts<CACHE_MAX_AGE){
-    networkOffset = new Date(cache..replace(/-/g,'/')).getTime() - Date.now();
-    setDot(true);
-    srcEl.textContent=`时间来源：苏宁（缓存）`;
-  } else {
-    networkOffset = 0;
-    setDot(false);
-    srcEl.textContent=`时间来源：本地时间`;
-  }
-  try{
-    const sys=await fetchSuning();
-    networkOffset = new Date(sys.replace(/-/g,'/')).getTime() - Date.now();
-    setDot(true);
-    srcEl.textContent=`时间来源：苏宁（网络）`;
-    saveCache(sys);
-  }catch{}
+    // 请求网络时间
+    try {
+        const r = await fetch(TIME_API);
+        const j = await r.json();
+        if(j?.data?.t){
+            networkOffset = parseInt(j.data.t) - Date.now();
+            localStorage.setItem(CACHE_KEY, JSON.stringify({offset:networkOffset, ts:Date.now()}));
+            setDot(true);
+            srcEl.textContent='时间来源：网络';
+        }
+    } catch(e){ /* 网络失败继续用本地 */ }
 }
 
 function tick(){
-  const now = Date.now() + networkOffset;
-  const displayTime = new Date(now);
-  const y=displayTime.getFullYear(), m=displayTime.getMonth()+1, d=displayTime.getDate();
-  const hh=displayTime.getHours().toString().padStart(2,'0'),
-        mm=displayTime.getMinutes().toString().padStart(2,'0'),
-        ss=displayTime.getSeconds().toString().padStart(2,'0');
-  const weekday=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][displayTime.getDay()];
-  dEl.textContent=`${y}年${m}月${d}日`;
-  tEl.textContent=`${hh}:${mm}:${ss}`;
-  wEl.textContent=weekday;
+    const now = Date.now() + networkOffset;
+    const d = new Date(now);
+    const y=d.getFullYear(), m=d.getMonth()+1, day=d.getDate();
+    const hh=d.getHours().toString().padStart(2,'0'),
+          mm=d.getMinutes().toString().padStart(2,'0'),
+          ss=d.getSeconds().toString().padStart(2,'0');
+    const weekday=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][d.getDay()];
+    dEl.textContent=`${y}年${m}月${day}日`;
+    tEl.textContent=`${hh}:${mm}:${ss}`;
+    wEl.textContent=weekday;
 }
 
-async function periodicSync(){
-  try{
-    const sys=await fetchSuning();
-    networkOffset = new Date(sys.replace(/-/g,'/')).getTime() - Date.now();
-    setDot(true);
-    srcEl.textContent=`时间来源：苏宁（网络）`;
-    saveCache(sys);
-  }catch{}
-}
-
-(async function(){
-  tick(); setInterval(tick,1000);
-  await initTime();
-  setInterval(periodicSync,5*60*1000);
-})();
+// 启动
+initTime().then(()=>{ tick(); setInterval(tick,1000); });
 </script>
 </body>
 </html>
