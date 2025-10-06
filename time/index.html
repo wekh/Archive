@@ -28,12 +28,10 @@ body{
 <div class="date" id="date">加载中...</div>
 <div class="time" id="time">--:--:--</div>
 <div class="week" id="week">星期--</div>
-<div class="footer" id="src">时间来源：加载中</div>
+<div class="footer" id="src">时间来源：本地</div>
 
 <script>
-const TIME_API = 'https://worldtimeapi.org/api/timezone/Asia/Shanghai';
-const CACHE_KEY = 'time_cache_v1';
-const CACHE_MAX_AGE = 10*60*1000; // 10分钟缓存
+const TIME_API = 'https://timeapi.io/api/Time/current/zone?timeZone=Asia/Shanghai';
 let networkOffset = 0;
 
 const dEl=document.getElementById('date'),
@@ -41,7 +39,7 @@ const dEl=document.getElementById('date'),
       wEl=document.getElementById('week'),
       srcEl=document.getElementById('src');
 
-// 更新显示
+// 每秒更新显示
 function tick(){
   const now = Date.now() + networkOffset;
   const d = new Date(now);
@@ -55,49 +53,30 @@ function tick(){
   wEl.textContent=`星期${weekday}`;
 }
 
-// 加载缓存
-function loadCache(){
-  try{
-    const raw=localStorage.getItem(CACHE_KEY);
-    return raw?JSON.parse(raw):null;
-  }catch{return null;}
-}
-
-// 保存缓存
-function saveCache(offset){
-  try{
-    localStorage.setItem(CACHE_KEY, JSON.stringify({offset, ts: Date.now()}));
-  }catch{}
-}
-
 // 初始化时间
-async function initTime(){
-  const cache = loadCache();
-  if(cache && Date.now()-cache.ts < CACHE_MAX_AGE){
-    networkOffset = cache.offset;
-    srcEl.textContent='时间来源：缓存/本地';
-  } else {
-    networkOffset = 0;
-    srcEl.textContent='时间来源：本地';
-  }
+function initTime(){
+  tick(); // 先显示本地时间
+  srcEl.textContent='时间来源：本地';
 
-  // 请求网络时间
-  try{
-    const r = await fetch(TIME_API);
-    const j = await r.json();
-    if(j?.datetime){
-      const networkTime = new Date(j.datetime).getTime();
-      networkOffset = networkTime - Date.now();
-      saveCache(networkOffset);
-      srcEl.textContent='时间来源：网络';
-    }
-  }catch{
-    // 网络失败继续用缓存/本地时间
-  }
+  // 后台获取网络时间，计算偏差
+  fetch(TIME_API)
+    .then(res=>res.json())
+    .then(data=>{
+      if(data?.time){
+        const networkTime = new Date(data.time).getTime();
+        networkOffset = networkTime - Date.now();
+        srcEl.textContent='时间来源：网络';
+      }
+    })
+    .catch(()=>{
+      // 网络失败继续用本地时间
+      srcEl.textContent='时间来源：本地';
+    });
 }
 
 // 启动
-initTime().then(()=>{ tick(); setInterval(tick,1000); });
+initTime();
+setInterval(tick,1000);
 </script>
 </body>
 </html>
