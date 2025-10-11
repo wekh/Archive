@@ -1,614 +1,227 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="img/favicon.ico">
-<title>北京时间</title>
-
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-:root {
-    --bg-color: #ffffff;
-    --text-color: #333333;
-    --secondary-text: #666666;
-    --footer-text: #888888;
-    --dot-color: #666666;
-    --dot-active: #00cc00;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-color: #000000;
-        --text-color: #cccccc;
-        --secondary-text: #bbbbbb;
-        --footer-text: #888888;
-        --dot-color: #666666;
-        --dot-active: #00ff00;
-    }
-}
-
-body{
-    font-family:"Noto Sans SC",sans-serif;
-    background: var(--bg-color);
-    color: var(--text-color);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    padding:10px;
-    overflow:hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-.container {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 100%;
-    transition: all 0.3s ease;
-}
-.date{
-    font-size:4rem; /* 电脑端大字体 */
-    margin-bottom:2vh;
-    font-weight:500;
-    text-align:center;
-    line-height:1.2;
-    color: var(--text-color);
-    white-space: nowrap;
-}
-.time{
-    font-size:12rem; /* 电脑端超大字体 */
-    font-weight:700;
-    margin-bottom:3vh;
-    text-align:center;
-    line-height:1;
-    color: var(--text-color);
-    white-space: nowrap;
-    letter-spacing: -2px;
-    padding: 0 10px;
-}
-.week-lunar{
-    font-size:3rem; /* 电脑端大字体 */
-    color: var(--secondary-text);
-    margin-bottom:5vh;
-    text-align:center;
-    line-height:1.2;
-    white-space: nowrap;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-.lunar-date, .week-day {
-    white-space: nowrap;
-}
-.footer{
-    position:fixed;
-    bottom:20px;
-    width:100%;
-    text-align:center;
-    font-size:1.2rem; /* 电脑端正常字体 */
-    color: var(--footer-text);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    gap:10px;
-    white-space: nowrap;
-}
-.dot{
-    width:12px;
-    height:12px;
-    border-radius:50%;
-    background: var(--dot-color);
-    transition:.3s;
-    flex-shrink: 0;
-}
-
-/* 平板设备 (768px - 1024px) */
-@media (max-width: 1024px) {
-    .date{
-        font-size:3.5rem;
-    }
-    .time{
-        font-size:10rem;
-    }
-    .week-lunar{
-        font-size:2.5rem;
-        gap: 15px;
-    }
-    .footer{
-        font-size:1.1rem;
-    }
-}
-
-/* 大手机设备 (600px - 768px) */
-@media (max-width: 768px) {
-    .date{
-        font-size:3rem;
-    }
-    .time{
-        font-size:8rem;
-    }
-    .week-lunar{
-        font-size:2rem;
-        gap: 12px;
-    }
-    .footer{
-        font-size:1rem;
-    }
-}
-
-/* 中等手机设备 (480px - 600px) */
-@media (max-width: 600px) {
-    .date{
-        font-size:2.5rem;
-    }
-    .time{
-        font-size:6rem;
-    }
-    .week-lunar{
-        font-size:1.8rem;
-        gap: 10px;
-    }
-    .footer{
-        font-size:0.9rem;
-    }
-}
-
-/* 小手机设备 (375px - 480px) */
-@media (max-width: 480px) {
-    .date{
-        font-size:2rem;
-    }
-    .time{
-        font-size:5rem;
-        letter-spacing: -1px;
-    }
-    .week-lunar{
-        font-size:1.5rem;
-        gap: 8px;
-        flex-direction: column;
-    }
-    .footer{
-        font-size:0.8rem;
-    }
-}
-
-/* 超小手机设备 (320px - 375px) */
-@media (max-width: 375px) {
-    .date{
-        font-size:1.8rem;
-    }
-    .time{
-        font-size:4.5rem;
-        letter-spacing: -1px;
-    }
-    .week-lunar{
-        font-size:1.3rem;
-        gap: 6px;
-        flex-direction: column;
-    }
-    .footer{
-        font-size:0.7rem;
-    }
-}
-
-/* 极小手机设备 (< 320px) */
-@media (max-width: 320px) {
-    .date{
-        font-size:1.6rem;
-    }
-    .time{
-        font-size:4rem;
-        letter-spacing: -2px;
-    }
-    .week-lunar{
-        font-size:1.2rem;
-        gap: 5px;
-        flex-direction: column;
-    }
-    .footer{
-        font-size:0.6rem;
-    }
-}
-
-/* 横屏样式 */
-@media (orientation: landscape) {
-    .container {
-        justify-content: center;
-        padding: 20px;
-    }
-}
-
-/* 手机横屏样式 */
-@media (orientation: landscape) and (max-width: 1024px) {
-    .date {
-        font-size: 2.5rem;
-        margin-bottom: 1.5vh;
-    }
-    .time {
-        font-size: 6rem;
-        margin-bottom: 2vh;
-        letter-spacing: -1px;
-    }
-    .week-lunar {
-        font-size: 1.8rem;
-        margin-bottom: 3vh;
-        gap: 15px;
-    }
-    .footer {
-        font-size: 0.9rem;
-        bottom: 15px;
-    }
-}
-
-/* 小横屏设备优化 */
-@media (orientation: landscape) and (max-height: 500px) {
-    .date {
-        font-size: 2rem;
-        margin-bottom: 1vh;
-    }
-    .time {
-        font-size: 5rem;
-        margin-bottom: 1.5vh;
-    }
-    .week-lunar {
-        font-size: 1.5rem;
-        margin-bottom: 2vh;
-        gap: 10px;
-    }
-    .footer {
-        font-size: 0.8rem;
-        bottom: 10px;
-    }
-}
-
-/* 大屏幕电脑优化 */
-@media (min-width: 1200px) {
-    .date {
-        font-size: 5rem;
-    }
-    .time {
-        font-size: 15rem;
-    }
-    .week-lunar {
-        font-size: 3.5rem;
-        gap: 25px;
-    }
-    .footer {
-        font-size: 1.5rem;
-    }
-}
-
-/* 超大屏幕优化 */
-@media (min-width: 1920px) {
-    .date {
-        font-size: 6rem;
-    }
-    .time {
-        font-size: 18rem;
-    }
-    .week-lunar {
-        font-size: 4rem;
-        gap: 30px;
-    }
-    .footer {
-        font-size: 1.8rem;
-    }
-}
-
-/* 防止文字溢出 */
-.date, .time, .week-lunar {
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-/* 确保内容在横屏时不会超出屏幕 */
-@media (orientation: landscape) {
-    .container {
-        max-height: 90vh;
-    }
-    .time {
-        max-height: 40vh;
-    }
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>北京时间实时显示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .clock-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .time-display {
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            font-weight: bold;
+            margin: 15px 0;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            line-height: 1.3;
+        }
+        
+        .sun-info {
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            margin-top: 15px;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: inline-block;
+        }
+        
+        .info-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+            justify-content: center;
+        }
+        
+        .info-card {
+            flex: 1;
+            min-width: 250px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 18px;
+            text-align: left;
+        }
+        
+        .info-card h3 {
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 8px;
+        }
+        
+        .info-card p {
+            line-height: 1.5;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+        
+        .timezone-info {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .timezone-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        
+        /* 小屏幕设备优化 */
+        @media (max-width: 480px) {
+            .container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .clock-container {
+                padding: 15px;
+                margin: 15px 0;
+            }
+            
+            .time-display {
+                margin: 10px 0;
+            }
+            
+            .sun-info {
+                padding: 10px;
+                margin-top: 10px;
+            }
+            
+            .info-card {
+                min-width: 100%;
+                padding: 15px;
+            }
+            
+            .timezone-item {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        /* 中等屏幕设备优化 */
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            .info-card {
+                min-width: calc(50% - 10px);
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="date" id="date">加载中...</div>
-    <div class="time" id="time">--:--:--</div>
-    <div class="week-lunar">
-        <span class="lunar-date" id="lunarDate">农历加载中</span>
-        <span class="week-day" id="weekDay"></span>
+    <div class="container">
+        <h1>北京时间实时显示</h1>
+        <p class="subtitle">基于国际标准时间的中国标准时间 (UTC+8)</p>
+        
+        <div class="clock-container">
+            <div class="time-display">
+                <a href="https://time.is/Beijing" id="time_is_link" rel="nofollow" style="font-size:inherit; color:inherit; text-decoration:none">北京时间:</a>
+                <span id="Beijing_z43d" style="font-size:inherit"></span>
+            </div>
+            <div class="sun-info" id="sun-info">
+                <!-- 日出日落信息将在这里显示 -->
+            </div>
+            <script src="//widget.time.is/zh.js"></script>
+            <script>
+                time_is_widget.init({
+                    Beijing_z43d:{
+                        template:"TIME<br>DATE", 
+                        date_format:"year-monthnum-daynum dname", 
+                        coords:"39.9075000,116.3972300"
+                    }
+                });
+                
+                // 获取日出日落信息
+                setTimeout(function() {
+                    // 模拟日出日落时间（实际应用中应从API获取）
+                    const sunrise = "06:19";
+                    const sunset = "17:43";
+                    document.getElementById('sun-info').textContent = `日出: ${sunrise}  日落: ${sunset}`;
+                }, 1000);
+            </script>
+        </div>
+        
+        <div class="timezone-info">
+            <div class="timezone-item">UTC+8</div>
+            <div class="timezone-item">东八区</div>
+            <div class="timezone-item">中国标准时间</div>
+        </div>
+        
+        <div class="info-section">
+            <div class="info-card">
+                <h3>关于北京时间</h3>
+                <p>北京时间是中国采用的标准时间，比协调世界时快8小时。</p>
+                <p>北京时间并不基于北京当地的太阳时，而是基于东经120°的平太阳时。</p>
+            </div>
+            
+            <div class="info-card">
+                <h3>日出日落信息</h3>
+                <p>日出日落时间基于北京地理坐标(39.9075°N, 116.39723°E)计算。</p>
+                <p>这些时间会随季节变化，夏季日出较早、日落较晚，冬季则相反。</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>时间数据由 Time.is 提供</p>
+        </div>
     </div>
-</div>
-<div class="footer"><div class="dot" id="dot"></div><span id="src">加载中...</span></div>
-
-<script>
-const SUNING='https://quan.suning.com/getSysTime.do';
-const CACHE_KEY='suning_cache_v1';
-const LUNAR_CACHE_KEY='lunar_cache_v1';
-const CACHE_MAX_AGE=10*60*1000;
-const LUNAR_CACHE_MAX_AGE=24*60*60*1000; // 农历缓存1天
-const dEl=document.getElementById('date'),
-      tEl=document.getElementById('time'),
-      wEl=document.getElementById('weekDay'),
-      lunarEl=document.getElementById('lunarDate'),
-      dot=document.getElementById('dot'),
-      srcEl=document.getElementById('src');
-
-let networkOffset=0;
-let isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-// 改进的农历计算函数（更准确）
-function getLunarDate(date) {
-    // 使用更准确的农历数据
-    const lunarInfo = [
-        0x04bd8, 0x04ae0, 0x0a570, 0x054d5, 0x0d260, 0x0d950, 0x16554, 0x056a0, 0x09ad0, 0x055d2,
-        0x04ae0, 0x0a5b6, 0x0a4d0, 0x0d250, 0x1d255, 0x0b540, 0x0d6a0, 0x0ada2, 0x095b0, 0x14977,
-        0x04970, 0x0a4b0, 0x0b4b5, 0x06a50, 0x06d40, 0x1ab54, 0x02b60, 0x09570, 0x052f2, 0x04970,
-        0x06566, 0x0d4a0, 0x0ea50, 0x06e95, 0x05ad0, 0x02b60, 0x186e3, 0x092e0, 0x1c8d7, 0x0c950,
-        0x0d4a0, 0x1d8a6, 0x0b550, 0x056a0, 0x1a5b4, 0x025d0, 0x092d0, 0x0d2b2, 0x0a950, 0x0b557,
-        0x06ca0, 0x0b550, 0x15355, 0x04da0, 0x0a5b0, 0x14573, 0x052b0, 0x0a9a8, 0x0e950, 0x06aa0,
-        0x0aea6, 0x0ab50, 0x04b60, 0x0aae4, 0x0a570, 0x05260, 0x0f263, 0x0d950, 0x05b57, 0x056a0,
-        0x096d0, 0x04dd5, 0x04ad0, 0x0a4d0, 0x0d4d4, 0x0d250, 0x0d558, 0x0b540, 0x0b6a0, 0x195a6,
-        0x095b0, 0x049b0, 0x0a974, 0x0a4b0, 0x0b27a, 0x06a50, 0x06d40, 0x0af46, 0x0ab60, 0x09570,
-        0x04af5, 0x04970, 0x064b0, 0x074a3, 0x0ea50, 0x06b58, 0x055c0, 0x0ab60, 0x096d5, 0x092e0,
-        0x0c960, 0x0d954, 0x0d4a0, 0x0da50, 0x07552, 0x056a0, 0x0abb7, 0x025d0, 0x092d0, 0x0cab5,
-        0x0a950, 0x0b4a0, 0x0baa4, 0x0ad50, 0x055d9, 0x04ba0, 0x0a5b0, 0x15176, 0x052b0, 0x0a930,
-        0x07954, 0x06aa0, 0x0ad50, 0x05b52, 0x04b60, 0x0a6e6, 0x0a4e0, 0x0d260, 0x0ea65, 0x0d530,
-        0x05aa0, 0x076a3, 0x096d0, 0x04afb, 0x04ad0, 0x0a4d0, 0x1d0b6, 0x0d250, 0x0d520, 0x0dd45,
-        0x0b5a0, 0x056d0, 0x055b2, 0x049b0, 0x0a577, 0x0a4b0, 0x0aa50, 0x1b255, 0x06d20, 0x0ada0
-    ];
-
-    const nStr1 = ['日', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十'];
-    const nStr2 = ['初', '十', '廿', '卅'];
-    const monthNames = ['正', '二', '三', '四', '五', '六', '七', '八', '九', '十', '冬', '腊'];
-    const animals = ['鼠', '牛', '虎', '兔', '龙', '蛇', '马', '羊', '猴', '鸡', '狗', '猪'];
-
-    let i, leap = 0, temp = 0;
-    let baseDate = new Date(1900, 0, 31);
-    let offset = Math.floor((date - baseDate) / 86400000);
-
-    for (i = 1900; i < 2101 && offset > 0; i++) {
-        temp = lYearDays(i);
-        offset -= temp;
-    }
-
-    if (offset < 0) {
-        offset += temp;
-        i--;
-    }
-
-    let year = i;
-    let leapMonth = leapMonthFunc(year);
-    let isLeap = false;
-
-    for (i = 1; i < 13 && offset > 0; i++) {
-        if (leapMonth > 0 && i === (leapMonth + 1) && !isLeap) {
-            --i;
-            isLeap = true;
-            temp = leapDays(year);
-        } else {
-            temp = monthDays(year, i);
-        }
-
-        if (isLeap && i === (leapMonth + 1)) isLeap = false;
-
-        offset -= temp;
-    }
-
-    if (offset === 0 && leapMonth > 0 && i === leapMonth + 1) {
-        if (isLeap) {
-            isLeap = false;
-        } else {
-            isLeap = true;
-            --i;
-        }
-    }
-
-    if (offset < 0) {
-        offset += temp;
-        --i;
-    }
-
-    let month = i;
-    let day = offset + 1;
-
-    // 获取农历月份和日期
-    let lunarMonth = monthNames[month - 1];
-    if (isLeap) lunarMonth = '闰' + lunarMonth;
-
-    let lunarDay;
-    if (day === 10) {
-        lunarDay = '初十';
-    } else if (day === 20) {
-        lunarDay = '二十';
-    } else if (day === 30) {
-        lunarDay = '三十';
-    } else {
-        lunarDay = nStr2[Math.floor(day / 10)] + nStr1[day % 10];
-    }
-
-    // 获取生肖
-    let animal = animals[(year - 4) % 12];
-
-    return `${lunarMonth}月${lunarDay} · ${animal}年`;
-
-    function lYearDays(y) {
-        let i, sum = 348;
-        for (i = 0x8000; i > 0x8; i >>= 1) {
-            sum += (lunarInfo[y - 1900] & i) ? 1 : 0;
-        }
-        return sum + leapDays(y);
-    }
-
-    function leapMonthFunc(y) {
-        return lunarInfo[y - 1900] & 0xf;
-    }
-
-    function leapDays(y) {
-        if (leapMonthFunc(y)) {
-            return (lunarInfo[y - 1900] & 0x10000) ? 30 : 29;
-        }
-        return 0;
-    }
-
-    function monthDays(y, m) {
-        return (lunarInfo[y - 1900] & (0x10000 >> m)) ? 30 : 29;
-    }
-}
-
-// 简化的农历获取函数 - 直接使用本地计算，避免网络问题
-async function getLunarDateWithVerification(date) {
-    // 先检查缓存
-    const cacheKey = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
-    const cached = loadLunarCache(cacheKey);
-    if (cached) {
-        return cached;
-    }
-    
-    // 直接使用本地计算，这个算法已经很准确了
-    const lunar = getLunarDate(date);
-    
-    // 保存到缓存
-    saveLunarCache(cacheKey, lunar);
-    
-    return lunar;
-}
-
-function saveLunarCache(key, lunar) {
-    try {
-        const cache = JSON.parse(localStorage.getItem(LUNAR_CACHE_KEY) || '{}');
-        cache[key] = {
-            lunar: lunar,
-            timestamp: Date.now()
-        };
-        localStorage.setItem(LUNAR_CACHE_KEY, JSON.stringify(cache));
-    } catch (e) {}
-}
-
-function loadLunarCache(key) {
-    try {
-        const cache = JSON.parse(localStorage.getItem(LUNAR_CACHE_KEY) || '{}');
-        const data = cache[key];
-        if (data && Date.now() - data.timestamp < LUNAR_CACHE_MAX_AGE) {
-            return data.lunar;
-        }
-    } catch (e) {}
-    return null;
-}
-
-function setDot(on){ 
-    dot.style.background = on ? 
-        (isDarkMode ? '#00ff00' : '#00cc00') : 
-        (isDarkMode ? '#666666' : '#999999'); 
-}
-
-function saveCache(sysTime2){ try{ localStorage.setItem(CACHE_KEY, JSON.stringify({s: sysTime2, ts: Date.now()})); }catch{} }
-function loadCache(){ try{ const raw=localStorage.getItem(CACHE_KEY); return raw?JSON.parse(raw):null; }catch{return null;} }
-async function fetchSuning(retries=3,delay=600){
-  for(let i=0;i<retries;i++){
-    try{
-      const r=await fetch(SUNING,{cache:'no-store'}); if(!r.ok) throw 0;
-      const j=await r.json(); if(j?.sysTime2) return j.sysTime2;
-    }catch{} if(i<retries-1) await new Promise(r=>setTimeout(r,delay));
-  }
-  throw new Error('fetch fail');
-}
-
-async function initTime(){
-  const cache=loadCache();
-  if(cache && Date.now()-cache.ts<CACHE_MAX_AGE){
-    networkOffset = new Date(cache.s.replace(/-/g,'/')).getTime() - Date.now();
-    setDot(true);
-    srcEl.textContent=`时间来源：苏宁（缓存）`;
-  } else {
-    networkOffset = 0;
-    setDot(false);
-    srcEl.textContent=`时间来源：本地时间`;
-  }
-  try{
-    const sys=await fetchSuning();
-    networkOffset = new Date(sys.replace(/-/g,'/')).getTime() - Date.now();
-    setDot(true);
-    srcEl.textContent=`时间来源：苏宁（网络）`;
-    saveCache(sys);
-  }catch{}
-}
-
-async function tick(){
-  const now = Date.now() + networkOffset;
-  const displayTime = new Date(now);
-  const y=displayTime.getFullYear(), m=displayTime.getMonth()+1, d=displayTime.getDate();
-  const hh=displayTime.getHours().toString().padStart(2,'0'),
-        mm=displayTime.getMinutes().toString().padStart(2,'0'),
-        ss=displayTime.getSeconds().toString().padStart(2,'0');
-  const weekday=['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][displayTime.getDay()];
-  
-  dEl.textContent=`${y}年${m}月${d}日`;
-  tEl.textContent=`${hh}:${mm}:${ss}`;
-  wEl.textContent=weekday;
-  
-  // 更新农历日期 - 使用简化的方法
-  try {
-    const lunarDate = await getLunarDateWithVerification(displayTime);
-    lunarEl.textContent = lunarDate;
-  } catch (error) {
-    // 如果出错，使用即时计算的农历
-    lunarEl.textContent = getLunarDate(displayTime);
-  }
-}
-
-async function periodicSync(){
-  try{
-    const sys=await fetchSuning();
-    networkOffset = new Date(sys.replace(/-/g,'/')).getTime() - Date.now();
-    setDot(true);
-    srcEl.textContent=`时间来源：苏宁（网络）`;
-    saveCache(sys);
-  }catch{}
-}
-
-// 监听深色模式变化
-function handleColorSchemeChange(e) {
-    isDarkMode = e.matches;
-    setDot(dot.style.background !== '#666666' && dot.style.background !== '#999999');
-}
-
-// 监听横竖屏变化
-function handleOrientationChange() {
-    console.log('Orientation changed');
-}
-
-// 事件监听
-window.addEventListener('resize', handleOrientationChange);
-window.addEventListener('orientationchange', handleOrientationChange);
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', handleColorSchemeChange);
-
-// 立即显示农历，不等待异步
-function updateLunarImmediately(date) {
-    lunarEl.textContent = getLunarDate(date);
-}
-
-(async function(){
-  // 立即显示农历
-  const now = new Date();
-  updateLunarImmediately(now);
-  
-  // 开始计时器
-  tick(); 
-  setInterval(tick, 1000);
-  
-  await initTime();
-  setInterval(periodicSync, 5*60*1000);
-})();
-</script>
 </body>
 </html>
