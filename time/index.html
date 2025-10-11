@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="icon" href="img/favicon.ico">
     <title>北京时间实时显示</title>
     <style>
         * {
@@ -250,24 +249,6 @@
             <div class="sun-info" id="sun-info">
                 <!-- 日出日落信息将在这里显示 -->
             </div>
-            <script src="//widget.time.is/zh.js"></script>
-            <script>
-                time_is_widget.init({
-                    Beijing_z43d:{
-                        template:"TIME<br>DATE", 
-                        date_format:"year-monthnum-daynum dname", 
-                        coords:"39.9075000,116.3972300"
-                    }
-                });
-                
-                // 获取日出日落信息
-                setTimeout(function() {
-                    // 模拟日出日落时间（实际应用中应从API获取）
-                    const sunrise = "06:19";
-                    const sunset = "17:43";
-                    document.getElementById('sun-info').textContent = `日出: ${sunrise}  日落: ${sunset}`;
-                }, 1000);
-            </script>
         </div>
         
         <div class="info-section">
@@ -291,32 +272,43 @@
         </div>
     </div>
 
+    <script src="//widget.time.is/zh.js"></script>
     <script>
-        // 防止双击缩放
-        document.addEventListener('touchstart', function(event) {
-            if (event.touches.length > 1) {
-                event.preventDefault();
+        // 初始化时间组件
+        function initTime() {
+            time_is_widget.init({
+                Beijing_z43d:{
+                    template:"TIME<br>DATE", 
+                    date_format:"year-monthnum-daynum dname", 
+                    coords:"39.9075000,116.3972300"
+                }
+            });
+        }
+        
+        // 页面加载后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 延迟初始化确保资源加载完成
+            setTimeout(initTime, 100);
+            
+            // 获取日出日落信息
+            setTimeout(function() {
+                const sunrise = "06:19";
+                const sunset = "17:43";
+                document.getElementById('sun-info').textContent = `日出: ${sunrise}  日落: ${sunset}`;
+            }, 1000);
+        });
+        
+        // 监听页面可见性变化 - 当APP从后台回到前台时刷新时间
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                // 页面重新可见时重新初始化时间
+                setTimeout(initTime, 100);
             }
         });
-
-        let lastTouchEnd = 0;
-        document.addEventListener('touchend', function(event) {
-            const now = (new Date()).getTime();
-            if (now - lastTouchEnd <= 300) {
-                event.preventDefault();
-            }
-            lastTouchEnd = now;
-        }, false);
-
-        // 防止手势缩放
-        document.addEventListener('gesturestart', function(event) {
-            event.preventDefault();
-        });
-        document.addEventListener('gesturechange', function(event) {
-            event.preventDefault();
-        });
-        document.addEventListener('gestureend', function(event) {
-            event.preventDefault();
+        
+        // 监听页面聚焦事件（额外保险）
+        window.addEventListener('focus', function() {
+            setTimeout(initTime, 100);
         });
     </script>
 </body>
