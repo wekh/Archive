@@ -32,6 +32,7 @@
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             text-align: center;
+            margin-bottom: 40px;
         }
         
         h1 {
@@ -101,25 +102,32 @@
             font-size: 0.95rem;
         }
         
+        .highlight {
+            color: #ffeb3b;
+            font-weight: bold;
+        }
+        
         .footer {
-            margin-top: 30px;
-            font-size: 0.85rem;
+            text-align: center;
+            font-size: 0.8rem;
             opacity: 0.8;
+            margin-top: auto;
+            padding: 10px 0;
         }
         
-        .timezone-info {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
+        .footer a {
+            color: #fff;
+            text-decoration: none;
+            transition: opacity 0.3s;
         }
         
-        .timezone-item {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 8px 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
+        .footer a:hover {
+            opacity: 0.7;
+            text-decoration: underline;
+        }
+        
+        .separator {
+            margin: 0 8px;
         }
         
         /* 小屏幕设备优化 */
@@ -148,9 +156,12 @@
                 padding: 15px;
             }
             
-            .timezone-item {
-                padding: 6px 12px;
-                font-size: 0.8rem;
+            .footer {
+                font-size: 0.75rem;
+            }
+            
+            .separator {
+                margin: 0 5px;
             }
         }
         
@@ -199,29 +210,25 @@
             </script>
         </div>
         
-        <div class="timezone-info">
-            <div class="timezone-item">UTC+8</div>
-            <div class="timezone-item">东八区</div>
-            <div class="timezone-item">中国标准时间</div>
-        </div>
-        
         <div class="info-section">
             <div class="info-card">
                 <h3>关于北京时间</h3>
-                <p>北京时间是中国采用的标准时间，比协调世界时快8小时。</p>
-                <p>北京时间并不基于北京当地的太阳时，而是基于东经120°的平太阳时。</p>
+                <p>北京时间是中国采用的标准时间，属于<span class="highlight">UTC+8时区</span>。</p>
+                <p>基于东经120°的平太阳时，作为全国统一的标准时间使用。</p>
             </div>
             
             <div class="info-card">
                 <h3>日出日落信息</h3>
-                <p>日出日落时间基于北京地理坐标(39.9075°N, 116.39723°E)计算。</p>
-                <p>这些时间会随季节变化，夏季日出较早、日落较晚，冬季则相反。</p>
+                <p>基于北京地理坐标计算，随季节变化。</p>
+                <p>夏季日出较早、日落较晚，冬季则相反。</p>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>时间数据由 Time.is 提供</p>
-        </div>
+    </div>
+    
+    <div class="footer">
+        <span>时间数据由 Time.is 提供</span>
+        <span class="separator">|</span>
+        <a href="https://time.wekh.eu.org/bjtime.apk">下载APP</a>
     </div>
 </body>
 </html>
