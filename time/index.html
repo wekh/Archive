@@ -3,18 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
-    <!-- 图标 -->
-    <link rel="icon" href="icons/favicon.ico">
-    <link rel="apple-touch-icon" href="icons/icon-192.png">
-    
-    <!-- PWA 配置 -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#1a2a6c">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="北京时间">
-    
+    <link rel="icon" href="img/favicon.ico">
     <title>北京时间</title>
     <style>
         * {
@@ -310,19 +299,6 @@
         document.addEventListener('gestureend', function(event) {
             event.preventDefault();
         });
-
-        // 注册 Service Worker
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(function(registration) {
-                        console.log('ServiceWorker 注册成功: ', registration.scope);
-                    })
-                    .catch(function(error) {
-                        console.log('ServiceWorker 注册失败: ', error);
-                    });
-            });
-        }
     </script>
 </body>
 </html>
