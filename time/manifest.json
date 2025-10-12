@@ -1,0 +1,25 @@
+{
+  "name": "北京时间实时显示",
+  "short_name": "北京时间",
+  "description": "基于国际标准时间的中国标准时间 (UTC+8)",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a2a6c",
+  "theme_color": "#1a2a6c",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "zh-CN",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["utilities", "productivity"]
+}
