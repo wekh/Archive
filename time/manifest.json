@@ -4,7 +4,7 @@
   "description": "基于国际标准时间的中国标准时间 (UTC+8)",
   "id": "/beijing-time-app",
   "start_url": "/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#1a2a6c",
   "theme_color": "#1a2a6c",
   "orientation": "portrait",
