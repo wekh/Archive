@@ -22,8 +22,8 @@
       ]
     },
     {
-      "source": "/status",
-      "destination": "https://epg.112114.xyz/status",
+      "source": "/iptv.txt",
+      "destination": "https://develop202.github.io/migu_video/interface.txt",
       "has": [
         { "type": "host", "value": "tv.wekh.eu.org" }
       ]
