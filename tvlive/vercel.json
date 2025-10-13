@@ -1,9 +1,24 @@
 {
   "routes": [
-    {"src": "/epg","dest": "https://epg.112114.xyz/"},
-    {"src": "/pp.xml","dest": "https://epg.112114.xyz/pp.xml"},
-    {"src": "/pp.xml.gz","dest": "https://epg.112114.xyz/pp.xml.gz"},
-    {"src": "/status","dest": "https://epg.112114.xyz/status"},
-    {"src": "/iptv.txt","dest": "https://develop202.github.io/migu_video/interface.txt"}
+    {
+      "src": "/epg",
+      "dest": "https://epg.112114.xyz/"
+    },
+    {
+      "src": "/pp.xml",
+      "dest": "https://epg.112114.xyz/pp.xml"
+    },
+    {
+      "src": "/pp.xml.gz", 
+      "dest": "https://epg.112114.xyz/pp.xml.gz"
+    },
+    {
+      "src": "/status",
+      "dest": "https://epg.112114.xyz/status"
+    },
+    {
+      "src": "/iptv.txt",
+      "dest": "https://develop202.github.io/migu_video/interface.txt"
+    }
   ]
 }
