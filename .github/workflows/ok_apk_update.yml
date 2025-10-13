@@ -1,4 +1,4 @@
-name: OKYingShi Release update
+name: OKTV Release update
 
 on:
   schedule:
@@ -60,22 +60,22 @@ jobs:
       - name: Set up GitHub CLI
         run: gh --version
 
-      - name: Delete old OKYingShi release and tag
+      - name: Delete old OKTV release and tag
         run: |
-          gh release delete "OKYingShi" --yes || true
-          git push origin :refs/tags/OKYingShi || true
-          git tag -d "OKYingShi" || true
+          gh release delete "OKTV" --yes || true
+          git push origin :refs/tags/OKTV || true
+          git tag -d "OKTV" || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create new OKYingShi release and upload APKs
+      - name: Create new OKTV release and upload APKs
         run: |
-          git tag "OKYingShi"
-          git push origin "OKYingShi" --force
-          # Release 名称 OKYingShi+版本号，描述为空
-          gh release create "OKYingShi" -t "OKYingShi ${{ steps.download_apks.outputs.version }}"
+          git tag "OKTV"
+          git push origin "OKTV" --force
+          # Release 名称 OKTV+版本号，描述为空
+          gh release create "OKTV" -t "OKTV ${{ steps.download_apks.outputs.version }}"
           for f in ok_apk_update/apks/*; do
-            gh release upload "OKYingShi" "$f" --clobber
+            gh release upload "OKTV" "$f" --clobber
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
