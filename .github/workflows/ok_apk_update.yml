@@ -1,8 +1,8 @@
-name: OKYingShi Release update
+name: OK影视 Release update
 
 on:
   schedule:
-    - cron: '0 0 */3 * *'  # 每3天自动运行
+    - cron: '0 0 */1 * *'  # 每1天自动运行
   workflow_dispatch:
 
 jobs:
@@ -60,22 +60,22 @@ jobs:
       - name: Set up GitHub CLI
         run: gh --version
 
-      - name: Delete old OKYingShi release and tag
+      - name: Delete old OK影视 release and tag
         run: |
-          gh release delete "OKYingShi" --yes || true
-          git push origin :refs/tags/OKYingShi || true
-          git tag -d "OKYingShi" || true
+          gh release delete "OK影视" --yes || true
+          git push origin :refs/tags/OK影视 || true
+          git tag -d "OK影视" || true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create new OKYingShi release and upload APKs
+      - name: Create new OK影视 release and upload APKs
         run: |
-          git tag "OKYingShi"
-          git push origin "OKYingShi" --force
-          # Release 名称 OKYingShi+版本号，描述为空
-          gh release create "OKYingShi" -t "OKYingShi ${{ steps.download_apks.outputs.version }}"
+          git tag "OK影视"
+          git push origin "OK影视" --force
+          # Release 名称 OK影视+版本号，描述为空
+          gh release create "OK影视" -t "OK影视 ${{ steps.download_apks.outputs.version }}"
           for f in ok_apk_update/apks/*; do
-            gh release upload "OKYingShi" "$f" --clobber
+            gh release upload "OK影视" "$f" --clobber
           done
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
