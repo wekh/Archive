@@ -49,12 +49,10 @@
           "value": "time.wekh.eu.org"
         }
       ]
-    }
-  ],
-  "routes": [
+    },
     {
-      "src": "/epg",
-      "dest": "https://epg.112114.xyz/",
+      "source": "/epg",
+      "destination": "https://epg.112114.xyz/",
       "has": [
         {
           "type": "host",
@@ -63,8 +61,8 @@
       ]
     },
     {
-      "src": "/pp.xml",
-      "dest": "https://epg.112114.xyz/pp.xml",
+      "source": "/pp.xml",
+      "destination": "https://epg.112114.xyz/pp.xml",
       "has": [
         {
           "type": "host",
@@ -73,8 +71,8 @@
       ]
     },
     {
-      "src": "/pp.xml.gz",
-      "dest": "https://epg.112114.xyz/pp.xml.gz",
+      "source": "/pp.xml.gz",
+      "destination": "https://epg.112114.xyz/pp.xml.gz",
       "has": [
         {
           "type": "host",
@@ -83,8 +81,8 @@
       ]
     },
     {
-      "src": "/status",
-      "dest": "https://epg.112114.xyz/status",
+      "source": "/status",
+      "destination": "https://epg.112114.xyz/status",
       "has": [
         {
           "type": "host",
@@ -93,8 +91,8 @@
       ]
     },
     {
-      "src": "/iptv.txt",
-      "dest": "https://develop202.github.io/migu_video/interface.txt",
+      "source": "/iptv.txt",
+      "destination": "https://develop202.github.io/migu_video/interface.txt",
       "has": [
         {
           "type": "host",
