@@ -54,23 +54,53 @@
   "routes": [
     {
       "src": "/epg",
-      "dest": "https://epg.112114.xyz/"
+      "dest": "https://epg.112114.xyz/",
+      "has": [
+        {
+          "type": "host",
+          "value": "tv.wekh.eu.org"
+        }
+      ]
     },
     {
       "src": "/pp.xml",
-      "dest": "https://epg.112114.xyz/pp.xml"
+      "dest": "https://epg.112114.xyz/pp.xml",
+      "has": [
+        {
+          "type": "host",
+          "value": "tv.wekh.eu.org"
+        }
+      ]
     },
     {
       "src": "/pp.xml.gz",
-      "dest": "https://epg.112114.xyz/pp.xml.gz"
+      "dest": "https://epg.112114.xyz/pp.xml.gz",
+      "has": [
+        {
+          "type": "host",
+          "value": "tv.wekh.eu.org"
+        }
+      ]
     },
     {
       "src": "/status",
-      "dest": "https://epg.112114.xyz/status"
+      "dest": "https://epg.112114.xyz/status",
+      "has": [
+        {
+          "type": "host",
+          "value": "tv.wekh.eu.org"
+        }
+      ]
     },
     {
       "src": "/iptv.txt",
-      "dest": "https://develop202.github.io/migu_video/interface.txt"
+      "dest": "https://develop202.github.io/migu_video/interface.txt",
+      "has": [
+        {
+          "type": "host",
+          "value": "tv.wekh.eu.org"
+        }
+      ]
     }
   ]
 }
