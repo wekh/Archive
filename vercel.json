@@ -1,93 +1,68 @@
 {
   "rewrites": [
     {
-      "source": "/(.*)",
-      "destination": "/software/$1",
-      "has": [
-        {
-          "type": "host",
-          "value": "pc.wekh.eu.org"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/tvbox/$1",
-      "has": [
-        {
-          "type": "host",
-          "value": "tvbox.wekh.eu.org"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/tvlive/$1",
-      "has": [
-        {
-          "type": "host",
-          "value": "tv.wekh.eu.org"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/home/$1",
-      "has": [
-        {
-          "type": "host",
-          "value": "wekh.eu.org"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/time/$1",
-      "has": [
-        {
-          "type": "host",
-          "value": "time.wekh.eu.org"
-        }
-      ]
-    },
-    {
       "source": "/epg",
       "destination": "https://epg.112114.xyz/",
       "has": [
-        {
-          "type": "host",
-          "value": "tv.wekh.eu.org"
-        }
+        { "type": "host", "value": "tv.wekh.eu.org" }
       ]
     },
     {
       "source": "/pp.xml",
       "destination": "https://epg.112114.xyz/pp.xml",
       "has": [
-        {
-          "type": "host",
-          "value": "tv.wekh.eu.org"
-        }
+        { "type": "host", "value": "tv.wekh.eu.org" }
       ]
     },
     {
       "source": "/pp.xml.gz",
       "destination": "https://epg.112114.xyz/pp.xml.gz",
       "has": [
-        {
-          "type": "host",
-          "value": "tv.wekh.eu.org"
-        }
+        { "type": "host", "value": "tv.wekh.eu.org" }
       ]
     },
     {
       "source": "/status",
       "destination": "https://epg.112114.xyz/status",
       "has": [
-        {
-          "type": "host",
-          "value": "tv.wekh.eu.org"
-        }
+        { "type": "host", "value": "tv.wekh.eu.org" }
+      ]
+    },
+
+    {
+      "source": "/(.*)",
+      "destination": "/software/$1",
+      "has": [
+        { "type": "host", "value": "pc.wekh.eu.org" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/tvbox/$1",
+      "has": [
+        { "type": "host", "value": "tvbox.wekh.eu.org" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/home/$1",
+      "has": [
+        { "type": "host", "value": "wekh.eu.org" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/time/$1",
+      "has": [
+        { "type": "host", "value": "time.wekh.eu.org" }
+      ]
+    },
+
+    {
+      "source": "/(.*)",
+      "destination": "/tvlive/$1",
+      "has": [
+        { "type": "host", "value": "tv.wekh.eu.org" }
       ]
     }
   ]
