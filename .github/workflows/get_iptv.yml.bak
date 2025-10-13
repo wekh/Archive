@@ -1,0 +1,70 @@
+name: Get Iptv
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # 每小时运行一次 (每分钟:0，每小时)
+      timezone: Asia/Shanghai  # 设置时区为上海（北京）时间
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  get_streams:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+
+    - name: Create and Run Python script
+      run: |
+        echo "import requests" > get_iptv.py
+        echo "" >> get_iptv.py
+        echo "# 定义两个 URL" >> get_iptv.py
+        echo "urls = [" >> get_iptv.py
+        echo "    \"https://tv.wekh.eu.org/txt?url=https://live.fanmingming.com/tv/m3u/ipv6.m3u\"," >> get_iptv.py
+        echo "    \"https://tv.wekh.eu.org/itv.txt\"" >> get_iptv.py
+        echo "]" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "# 打开文件以写入模式" >> get_iptv.py
+        echo "with open(\"iptv.txt\", \"w\") as file:" >> get_iptv.py
+        echo "    for url in urls:" >> get_iptv.py
+        echo "        try:" >> get_iptv.py
+        echo "            response = requests.get(url)" >> get_iptv.py
+        echo "            response.raise_for_status()  # 检查请求是否成功" >> get_iptv.py
+        echo "            playlist = response.text" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "            # 在每个 #genre# 后面添加 ,https://tv.wekh.eu.org/epg" >> get_iptv.py
+        echo "            playlist = playlist.replace(\"#genre#\", \"#genre#,https://tv.wekh.eu.org/epg\")" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "            # 检查最后一行是否为空行" >> get_iptv.py
+        echo "            if not playlist.endswith('\\n'):" >> get_iptv.py
+        echo "                playlist += '\\n'" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "            # 写入 URL 内容" >> get_iptv.py
+        echo "            file.write(playlist)" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "            print(f\"内容已成功从 {url} 保存到 iptv.txt 文件中\")" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "        except requests.exceptions.RequestException as e:" >> get_iptv.py
+        echo "            print(f\"请求失败: {url} - {e}\")" >> get_iptv.py
+        echo "" >> get_iptv.py
+        echo "print(\"所有内容已处理完毕\")" >> get_iptv.py
+
+        python get_iptv.py
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add iptv.txt
+        git commit -m "Update live streams playlist" --allow-empty
+        git push

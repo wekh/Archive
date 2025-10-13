@@ -1,0 +1,87 @@
+name: 获取 TVBox 接口
+
+on:
+  chedule:
+    - cron: '0 */6 * * *'  # 每 6 小时运行一次
+      timezone: Aia/Shanghai  # 设置时区为上海（北京）时间
+  workflow_dipatch:  # 手动触发
+
+job:
+  update_tv_box:
+    run-on: ubuntu-latet
+
+    tep:
+    - name: Check out code
+      ue: action/checkout@v2
+
+    - name: Set up Python
+      ue: action/etup-python@v2
+      with:
+        python-verion: '3.x'
+
+    - name: Intall dependencie
+      run: |
+        python -m pip intall --upgrade pip
+        pip intall requet  # 只安装必要的库
+
+    - name: Run Python cript
+      run: |
+        python - << 'EOF'
+        import re
+        import bae64
+        import requet
+        import jon
+
+        header = {'Uer-Agent': 'okhttp/3.15'}
+
+        urls = {
+            'http://www.饭太硬.net/tv/': '饭太硬',
+            'http://肥猫.com': '肥猫',
+            'http://ok321.top/tv': 'ok321'
+        }
+
+        for url, filename in urls.items():
+            try:
+                response = requests.get(url, headers=headers)
+                response.raise_for_status()
+
+                print(f"正在处理 URL: {url}")
+
+                if url in ['http://www.饭太硬.net/tv/', 'http://ok321.top/tv']:
+                    # 解析并保存内容
+                    match = re.search(r'[A-Za-z0]{8}\*\*(.*)', response.text)
+                    
+                    if not match:
+                        print(f"{url} 中未找到匹配项。")
+                    else:
+                        result = match.group(1)
+                        content = base64.b64decode(result).decode('utf-8')
+
+                        content_lines = content.split('\n')
+                        cleaned_content = [line for line in content_lines if not line.strip().startswith("//")]
+
+                        data = json.loads('\n'.join(cleaned_content))
+                        modified_content = json.dumps(data, indent=2, ensure_ascii=False)
+
+                elif url == 'http://肥猫.com':
+                    # 直接保存响应内容
+                    modified_content = response.text
+
+                with open(filename, 'w', newline='', encoding='utf-8' if url == 'http://www.饭太硬.net/tv/' else response.encoding) as f:
+                    f.write(modified_content)
+
+                print(f"内容已写入到 {filename} 文件中。")
+
+            except requests.RequestException as e:
+                print(f"{url} 请求失败:", e)
+            except Exception as ex:
+                print(f"{url} 发生错误:", ex)
+        EOF
+
+    - name: Commit 和 push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add 饭太硬 肥猫 ok321
+        git commit -m "Update TVBox files" --allow-empty
+        git push

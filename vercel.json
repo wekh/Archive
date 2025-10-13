@@ -22,6 +22,16 @@
     },
     {
       "source": "/(.*)",
+      "destination": "/tvlive/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "tv.wekh.eu.org"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
       "destination": "/home/$1",
       "has": [
         {
