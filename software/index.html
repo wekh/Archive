@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>wekh's 软件站</title>
     <link rel="icon" href="/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -30,6 +30,17 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            touch-action: manipulation;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            position: fixed;
         }
 
         body {
@@ -37,6 +48,8 @@
             color: var(--text);
             line-height: 1.6;
             min-height: 100vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .container {
@@ -581,6 +594,35 @@
     <div id="toast" class="toast">复制成功！</div>
 
     <script>
+        // 防止缩放和双击放大的额外措施
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+        
+        document.addEventListener('gesturestart', function(event) {
+            event.preventDefault();
+        });
+        
+        document.addEventListener('gesturechange', function(event) {
+            event.preventDefault();
+        });
+        
+        document.addEventListener('gestureend', function(event) {
+            event.preventDefault();
+        });
+        
+        // 防止双击缩放
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
         document.addEventListener('DOMContentLoaded', function() {
             // 处理带密码的链接
             document.querySelectorAll('.link-card[data-password]').forEach(function(card) {
