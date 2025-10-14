@@ -38,7 +38,7 @@ jobs:
         echo "channels_to_remove = [\"凤凰香港\", \"凤凰中文\", \"凤凰资讯\"]" >> get_iptv.py
         echo "" >> get_iptv.py
         echo "# 打开文件以写入模式" >> get_iptv.py
-        echo "with open(\"iptv.txt\", \"w\") as file:" >> get_iptv.py
+        echo "with open(\"tvlive/iptv.txt\", \"w\") as file:" >> get_iptv.py  # 修改文件路径
         echo "    for index, url in enumerate(urls):" >> get_iptv.py
         echo "        try:" >> get_iptv.py
         echo "            response = requests.get(url)" >> get_iptv.py
@@ -62,7 +62,7 @@ jobs:
         echo "            # 写入 URL 内容" >> get_iptv.py
         echo "            file.write(playlist)" >> get_iptv.py
         echo "" >> get_iptv.py
-        echo "            print(f\"内容已成功从 {url} 保存到 iptv.txt 文件中\")" >> get_iptv.py
+        echo "            print(f\"内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中\")" >> get_iptv.py  # 修改打印信息
         echo "" >> get_iptv.py
         echo "        except requests.exceptions.RequestException as e:" >> get_iptv.py
         echo "            print(f\"请求失败: {url} - {e}\")" >> get_iptv.py
@@ -75,6 +75,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add iptv.txt
+        git add tvlive/iptv.txt  # 修改文件路径
         git commit -m "Update live streams playlist" --allow-empty
         git push
