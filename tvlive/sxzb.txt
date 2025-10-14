@@ -84,6 +84,17 @@ CCTV风云剧场,http://zb.wekh.eu.org:6000/rtp/226.0.2.227:9728
 西藏卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.66:8440
 新疆卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.67:8448
 
+4K频道,#genre#,https://tv.wekh.eu.org/epg
+北京卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.2.155:9172
+深圳卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.244:2119
+广东卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.245:2120
+东方卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.248:2121
+江苏卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.249:2122
+浙江卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.247:2123
+山东卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.251:2124
+湖南卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.246:2125
+四川卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.250:2126
+
 影院频道,#genre#,https://tv.wekh.eu.org/epg
 CHC家庭影院,http://zb.wekh.eu.org:6000/rtp/226.0.2.240:9820
 CHC高清电影,http://zb.wekh.eu.org:6000/rtp/226.0.2.93:8004
