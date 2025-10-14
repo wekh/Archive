@@ -133,6 +133,24 @@
             background: #4caf50;
         }
         
+        .visit-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 80px;
+        }
+        
+        .visit-btn:hover {
+            background: #f57c00;
+        }
+        
         .player-section {
             background: rgba(255, 255, 255, 0.9);
             border-radius: 12px;
@@ -275,7 +293,7 @@
                 flex-direction: column;
             }
             
-            .copy-btn {
+            .copy-btn, .visit-btn {
                 padding: 10px;
                 min-width: auto;
             }
@@ -375,6 +393,17 @@
                 </div>
             </div>
 
+            <div class="resource-card">
+                <div class="card-header">
+                    <h2 class="card-title">酒店IPTV资源</h2>
+                </div>
+                <p class="card-description">酒店IPTV直播源聚合页面，提供多种直播资源。</p>
+                <div class="url-container">
+                    <div class="url-text">https://tonkiang.us/hoteliptv2025.php</div>
+                    <button class="visit-btn" data-url="https://tonkiang.us/hoteliptv2025.php">访问</button>
+                </div>
+            </div>
+
         </div>
         
         <div class="player-section">
@@ -399,6 +428,7 @@
             <p>2. 在相应的播放器或应用中粘贴该地址</p>
             <p>3. 根据播放器提示加载资源，即可观看直播或点播内容</p>
             <p>4. 推荐使用 TVBox、酷9 等播放器应用</p>
+            <p>5. 对于"访问"按钮的资源，点击后将直接跳转到相应页面</p>
         </div>
         
         <footer>
@@ -412,6 +442,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const copyButtons = document.querySelectorAll('.copy-btn');
+            const visitButtons = document.querySelectorAll('.visit-btn');
             const copyNotification = document.getElementById('copy-notification');
             const ku9Link = document.getElementById('ku9-link');
             
@@ -420,6 +451,14 @@
                 button.addEventListener('click', function() {
                     const url = this.getAttribute('data-url');
                     copyToClipboard(url, '已复制到剪贴板');
+                });
+            });
+            
+            // 访问按钮功能
+            visitButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    window.open(url, '_blank');
                 });
             });
             
