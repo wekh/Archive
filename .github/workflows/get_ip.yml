@@ -11,7 +11,7 @@ name: Get IP and Update Cloudflare DNS
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 每6小时运行一次
+    - cron: '0 */3 * * *'  # 每3小时运行一次
       timezone: Asia/Shanghai
   workflow_dispatch:       # 允许手动触发
 
