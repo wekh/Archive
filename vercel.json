@@ -57,7 +57,13 @@
         { "type": "host", "value": "time.wekh.eu.org" }
       ]
     },
-
+    {
+      "source": "/(.*)",
+      "destination": "/proxy/$1",
+      "has": [
+        { "type": "host", "value": "proxy.wekh.eu.org" }
+      ]
+    },
     {
       "source": "/(.*)",
       "destination": "/tvlive/$1",
