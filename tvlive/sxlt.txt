@@ -1,4 +1,4 @@
-山西频道,#genre#,https://tv.wekh.eu.org/epg
+山西频道,#genre#
 山西卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.152:9128
 山西黄河,http://zb.wekh.eu.org:6000/rtp/226.0.2.235:9792
 山西经济与科技,http://zb.wekh.eu.org:6000/rtp/226.0.2.236:9800
@@ -9,7 +9,7 @@
 运城公共频道,http://zb.wekh.eu.org:6000/rtp/226.0.2.105:9010
 运城科技教育,http://zb.wekh.eu.org:6000/rtp/226.0.2.106:9006
 
-央视频道,#genre#,https://tv.wekh.eu.org/epg
+央视频道,#genre#
 CCTV1,http://zb.wekh.eu.org:6000/rtp/226.0.2.153:9136
 CCTV2,http://zb.wekh.eu.org:6000/rtp/226.0.2.154:9144
 CCTV3,http://zb.wekh.eu.org:6000/rtp/226.0.2.208:9576
@@ -41,7 +41,7 @@ CCTV风云足球,http://zb.wekh.eu.org:6000/rtp/226.0.2.225:9712
 CCTV女性时尚,http://zb.wekh.eu.org:6000/rtp/226.0.2.226:9720
 CCTV风云剧场,http://zb.wekh.eu.org:6000/rtp/226.0.2.227:9728
 
-卫视频道,#genre#,https://tv.wekh.eu.org/epg
+卫视频道,#genre#
 湖南卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.143:9056
 浙江卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.144:9064
 安徽卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.145:9072
@@ -84,7 +84,7 @@ CCTV风云剧场,http://zb.wekh.eu.org:6000/rtp/226.0.2.227:9728
 西藏卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.66:8440
 新疆卫视,http://zb.wekh.eu.org:6000/rtp/226.0.2.67:8448
 
-4K频道,#genre#,https://tv.wekh.eu.org/epg
+4K频道,#genre#
 北京卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.2.155:9172
 深圳卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.244:2119
 广东卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.245:2120
@@ -95,12 +95,12 @@ CCTV风云剧场,http://zb.wekh.eu.org:6000/rtp/226.0.2.227:9728
 湖南卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.246:2125
 四川卫视4K,http://zb.wekh.eu.org:6000/rtp/226.0.1.250:2126
 
-影院频道,#genre#,https://tv.wekh.eu.org/epg
+影院频道,#genre#
 CHC家庭影院,http://zb.wekh.eu.org:6000/rtp/226.0.2.240:9820
 CHC高清电影,http://zb.wekh.eu.org:6000/rtp/226.0.2.93:8004
 CHC动作电影,http://zb.wekh.eu.org:6000/rtp/226.0.2.94:8012
 
-其他频道,#genre#,https://tv.wekh.eu.org/epg
+其他频道,#genre#
 CETV1,http://zb.wekh.eu.org:6000/rtp/226.0.2.181:9360
 金色学堂,http://zb.wekh.eu.org:6000/rtp/226.0.2.182:9368
 动漫秀场,http://zb.wekh.eu.org:6000/rtp/226.0.2.183:9376
@@ -143,7 +143,7 @@ CETV4,http://zb.wekh.eu.org:6000/rtp/226.0.2.70:8472
 财富天下,http://zb.wekh.eu.org:6000/rtp/226.0.2.139:9024
 党建频道,http://zb.wekh.eu.org:6000/rtp/226.0.2.184:9384
 
-地市频道,#genre#,https://tv.wekh.eu.org/epg
+地市频道,#genre#
 大同教育,http://zb.wekh.eu.org:6000/rtp/226.0.2.232:9772
 清徐,http://zb.wekh.eu.org:6000/rtp/226.0.2.191:9440
 朔州-1,http://zb.wekh.eu.org:6000/rtp/226.0.2.185:9392
@@ -164,7 +164,7 @@ CETV4,http://zb.wekh.eu.org:6000/rtp/226.0.2.70:8472
 阳泉-2科教,http://zb.wekh.eu.org:6000/rtp/226.0.2.234:9784
 九屏测试,http://zb.wekh.eu.org:6000/rtp/226.0.2.197:9488
 
-电影轮播,#genre#,https://tv.wekh.eu.org/epg
+电影轮播,#genre#
 穿越火线,https://025365.xyz:8082/huya.php?id=660101
 电影_星爷,https://025365.xyz:8082/huya.php?id=11342412
 电影_英叔,https://025365.xyz:8082/huya.php?id=11342421
@@ -250,7 +250,7 @@ CETV4,http://zb.wekh.eu.org:6000/rtp/226.0.2.70:8472
 剧集_地下交通站,https://025365.xyz:8082/huya.php?id=11342433
 剧集_邻里一家亲,https://025365.xyz:8082/huya.php?id=11342426
 
-历年春晚,#genre#,https://tv.wekh.eu.org/epg
+历年春晚,#genre#
 春晚1983,https://alimov2.a.kwimgs.com/upic/2022/01/31/15/BMjAyMjAxMzExNTU5MTRfNDAzMDAxOTlfNjYyNzMxNjcwMjBfMF8z_b_Beb3bda599f76c60c463c433ca7460153.mp4
 春晚1984,https://alimov2.a.kwimgs.com/upic/2022/01/31/15/BMjAyMjAxMzExNTU5NTRfNDAzMDAxOTlfNjYyNzMyMzg3MTRfMF8z_b_B192356dadbc90d207ba16964d4c2914c.mp4
 春晚1985,https://alimov2.a.kwimgs.com/upic/2022/01/31/16/BMjAyMjAxMzExNjAwMDFfNDAzMDAxOTlfNjYyNzMyNTAwMzJfMF8z_b_Be73c5abcbc0eeb2ec9fce6842e1362a4.mp4
