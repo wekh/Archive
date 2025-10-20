@@ -34,47 +34,44 @@ jobs:
             "https://tv.wekh.eu.org/itv.txt"
         ]
 
-        def ensure_one_blank_line_after_group(text: str) -> str:
-            lines = text.splitlines()
-            n = len(lines)
-            header_idxs = [i for i, line in enumerate(lines) if "#genre#" in line]
+        def ensure_one_blank_line_after_group(lines):
             new_lines = []
-            for idx, h in enumerate(header_idxs):
-                end = header_idxs[idx + 1] if idx + 1 < len(header_idxs) else n
-                last_line_idx = end - 1
-                # 添加分组内容
-                for i in range(h, end):
-                    new_lines.append(lines[i])
-                # 删除多余空行
-                while last_line_idx + 1 < len(lines) and lines[last_line_idx + 1].strip() == "":
-                    last_line_idx += 1
-                # 保证分组最后只有一行空行
-                if new_lines[-1].strip() != "":
+            n = len(lines)
+            i = 0
+            while i < n:
+                line = lines[i]
+                new_lines.append(line)
+                if "#genre#" in line:
+                    j = i + 1
+                    while j < n and "#genre#" not in lines[j]:
+                        new_lines.append(lines[j])
+                        j += 1
+                    # 删除分组尾部多余空行
+                    while new_lines and new_lines[-1].strip() == "":
+                        new_lines.pop()
+                    # 添加一行空行
                     new_lines.append("")
-            return "\n".join(new_lines)
+                    i = j
+                else:
+                    i += 1
+            return new_lines
 
-        with open("tvlive/iptv.txt", "w") as file:
+        with open("tvlive/iptv.txt", "w") as f:
             first_file = True
             for url in urls:
                 try:
-                    response = requests.get(url)
-                    response.raise_for_status()
-                    playlist = response.text
-                    playlist = ensure_one_blank_line_after_group(playlist)
+                    r = requests.get(url)
+                    r.raise_for_status()
+                    lines = r.text.splitlines()
+                    lines = ensure_one_blank_line_after_group(lines)
 
-                    # 合并文件时，如果不是第一个文件，保证前面至少有一行空行
                     if not first_file:
-                        if not previous_ended_with_blank:
-                            file.write("\n")
+                        # 如果上一文件末尾不是空行，则添加一行空行
+                        if f.tell() > 0:
+                            f.write("\n")
                     first_file = False
 
-                    if not playlist.endswith("\n"):
-                        playlist += "\n"
-
-                    file.write(playlist)
-                    # 记录本次写入是否以空行结尾
-                    previous_ended_with_blank = playlist.endswith("\n\n") or playlist.endswith("\n")
-
+                    f.write("\n".join(lines) + "\n")
                     print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
                 except requests.exceptions.RequestException as e:
                     print(f"❌ 请求失败: {url} - {e}")
