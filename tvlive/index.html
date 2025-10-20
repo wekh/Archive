@@ -186,6 +186,8 @@
             text-decoration: none;
             text-align: center;
             font-size: 0.9rem;
+            color: white;
+            font-weight: 600;
         }
         
         .player-btn:hover {
@@ -243,6 +245,11 @@
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 8px;
+            }
+            
+            .action-btn {
+                padding: 10px 16px;
+                min-width: 80px;
             }
         }
     </style>
@@ -388,8 +395,8 @@
                                     <div class="password-tag">密码：${resource.password}</div>
                                 </div>
                                 <p class="card-description">${resource.desc}</p>
-                                <a href="#" class="player-btn action-btn">
-                                    <i class="fas fa-download"></i> ${resource.title}下载地址
+                                <a href="#" class="player-btn">
+                                    下载地址
                                 </a>
                             </div>
                         `;
@@ -400,8 +407,8 @@
                                     <h2 class="card-title">${resource.title}</h2>
                                 </div>
                                 <p class="card-description">${resource.desc}</p>
-                                <a href="#" class="player-btn action-btn">
-                                    <i class="fas fa-download"></i> ${resource.title}下载地址
+                                <a href="#" class="player-btn">
+                                    下载地址
                                 </a>
                             </div>
                         `;
@@ -416,7 +423,7 @@
                             <div class="url-container">
                                 <div class="url-text">${resource.url}</div>
                                 <button class="action-btn ${resource.type === 'visit' ? 'visit-btn' : ''}">
-                                    ${resource.type === 'visit' ? '<i class="fas fa-external-link-alt"></i> 访问' : '<i class="fas fa-copy"></i> 复制'}
+                                    ${resource.type === 'visit' ? '访问' : '复制'}
                                 </button>
                             </div>
                         </div>
