@@ -62,13 +62,9 @@ jobs:
                     playlist = response.text
                     playlist = ensure_one_blank_line_after_group(playlist)
 
-                    # 合并文件时，前一个文件末尾没有空行，插入一行空行
+                    # 合并文件时，如果不是第一个文件，保证前面至少有一行空行
                     if not first_file:
-                        file.seek(file.tell() - 1)
-                        # 检查上一行是否为空行
-                        file.seek(0)
-                        content = file.read()
-                        if not content.endswith("\n\n"):
+                        if not previous_ended_with_blank:
                             file.write("\n")
                     first_file = False
 
@@ -76,6 +72,9 @@ jobs:
                         playlist += "\n"
 
                     file.write(playlist)
+                    # 记录本次写入是否以空行结尾
+                    previous_ended_with_blank = playlist.endswith("\n\n") or playlist.endswith("\n")
+
                     print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
                 except requests.exceptions.RequestException as e:
                     print(f"❌ 请求失败: {url} - {e}")
