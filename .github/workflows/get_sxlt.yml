@@ -57,21 +57,13 @@ jobs:
             return new_lines
 
         with open("tvlive/iptv.txt", "w") as f:
-            first_file = True
             for url in urls:
                 try:
                     r = requests.get(url)
                     r.raise_for_status()
                     lines = r.text.splitlines()
                     lines = ensure_one_blank_line_after_group(lines)
-
-                    if not first_file:
-                        # 如果上一文件末尾不是空行，则添加一行空行
-                        if f.tell() > 0:
-                            f.write("\n")
-                    first_file = False
-
-                    f.write("\n".join(lines) + "\n")
+                    f.write("\n".join(lines) + "\n")  # 直接写入，不再额外添加空行
                     print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
                 except requests.exceptions.RequestException as e:
                     print(f"❌ 请求失败: {url} - {e}")
