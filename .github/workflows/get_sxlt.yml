@@ -1,4 +1,4 @@
-name: Get sxlt
+name: Get Sxlt
 
 on:
   schedule:
@@ -40,53 +40,32 @@ jobs:
             new_lines = []
             for i, line in enumerate(lines):
                 if line.strip().endswith("#genre#"):
+                    # 如果上一行不是空行，则在前面插入空行
                     if i > 0 and lines[i - 1].strip() != "":
                         new_lines.append("")
                 new_lines.append(line)
             return "\n".join(new_lines)
 
-        def remove_duplicate_lines(text: str) -> str:
-            """去掉完全相同的重复行（保留顺序）"""
-            seen = set()
-            result = []
-            for line in text.splitlines():
-                # 保留空行
-                if line.strip() == "":
-                    result.append("")
-                    continue
-                if line not in seen:
-                    seen.add(line)
-                    result.append(line)
-            return "\n".join(result)
-
         with open("tvlive/iptv.txt", "w") as file:
-            all_content = []
-
             for url in urls:
                 try:
                     response = requests.get(url)
                     response.raise_for_status()
                     playlist = response.text
 
+                    # 保证 #genre# 前有空行
                     playlist = ensure_blank_line_before_genre(playlist)
-                    all_content.append(playlist)
-                    print(f"✅ 内容已成功从 {url} 获取")
+
+                    if not playlist.endswith('\n'):
+                        playlist += '\n'
+
+                    file.write(playlist)
+                    print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
 
                 except requests.exceptions.RequestException as e:
                     print(f"❌ 请求失败: {url} - {e}")
 
-            # 合并所有内容
-            combined = "\n".join(all_content)
-
-            # 去重
-            combined = remove_duplicate_lines(combined)
-
-            # 结尾加换行
-            if not combined.endswith('\n'):
-                combined += '\n'
-
-            file.write(combined)
-            print("🎬 所有内容已处理完毕，文件已保存到 tvlive/iptv.txt")
+        print("🎬 所有内容已处理完毕")
         EOF
 
         python get_iptv.py
