@@ -105,7 +105,7 @@ jobs:
       if: env.no_available_ips == 'false'
       env:
         CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-        DOMAIN: "wekh.eu.org"     # ← 修改为你的主域名
+        DOMAIN: "wekh.qzz.io"     # ← 修改为你的主域名
         SUB_DOMAIN: "zb"          # ← 修改为你的子域名
       run: |
         cat << 'EOF' > updateDNS.js
