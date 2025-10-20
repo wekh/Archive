@@ -9,7 +9,6 @@
 运城公共频道,http://zb.wekh.qzz.io:6000/rtp/226.0.2.105:9010
 运城科技教育,http://zb.wekh.qzz.io:6000/rtp/226.0.2.106:9006
 
-
 央视频道,#genre#
 CCTV1,http://zb.wekh.qzz.io:6000/rtp/226.0.2.153:9136
 CCTV2,http://zb.wekh.qzz.io:6000/rtp/226.0.2.154:9144
@@ -41,7 +40,6 @@ CCTV怀旧剧场,http://zb.wekh.qzz.io:6000/rtp/226.0.2.224:9704
 CCTV风云足球,http://zb.wekh.qzz.io:6000/rtp/226.0.2.225:9712
 CCTV女性时尚,http://zb.wekh.qzz.io:6000/rtp/226.0.2.226:9720
 CCTV风云剧场,http://zb.wekh.qzz.io:6000/rtp/226.0.2.227:9728
-
 
 卫视频道,#genre#
 湖南卫视,http://zb.wekh.qzz.io:6000/rtp/226.0.2.143:9056
@@ -86,7 +84,6 @@ CCTV风云剧场,http://zb.wekh.qzz.io:6000/rtp/226.0.2.227:9728
 西藏卫视,http://zb.wekh.qzz.io:6000/rtp/226.0.2.66:8440
 新疆卫视,http://zb.wekh.qzz.io:6000/rtp/226.0.2.67:8448
 
-
 4K频道,#genre#
 北京卫视4K,http://zb.wekh.qzz.io:6000/rtp/226.0.2.155:9172
 深圳卫视4K,http://zb.wekh.qzz.io:6000/rtp/226.0.1.244:2119
@@ -98,12 +95,10 @@ CCTV风云剧场,http://zb.wekh.qzz.io:6000/rtp/226.0.2.227:9728
 湖南卫视4K,http://zb.wekh.qzz.io:6000/rtp/226.0.1.246:2125
 四川卫视4K,http://zb.wekh.qzz.io:6000/rtp/226.0.1.250:2126
 
-
 影院频道,#genre#
 CHC家庭影院,http://zb.wekh.qzz.io:6000/rtp/226.0.2.240:9820
 CHC高清电影,http://zb.wekh.qzz.io:6000/rtp/226.0.2.93:8004
 CHC动作电影,http://zb.wekh.qzz.io:6000/rtp/226.0.2.94:8012
-
 
 其他频道,#genre#
 CETV1,http://zb.wekh.qzz.io:6000/rtp/226.0.2.181:9360
@@ -148,7 +143,6 @@ CETV4,http://zb.wekh.qzz.io:6000/rtp/226.0.2.70:8472
 财富天下,http://zb.wekh.qzz.io:6000/rtp/226.0.2.139:9024
 党建频道,http://zb.wekh.qzz.io:6000/rtp/226.0.2.184:9384
 
-
 地市频道,#genre#
 大同教育,http://zb.wekh.qzz.io:6000/rtp/226.0.2.232:9772
 清徐,http://zb.wekh.qzz.io:6000/rtp/226.0.2.191:9440
@@ -169,7 +163,6 @@ CETV4,http://zb.wekh.qzz.io:6000/rtp/226.0.2.70:8472
 阳泉-1新闻综合,http://zb.wekh.qzz.io:6000/rtp/226.0.2.233:9776
 阳泉-2科教,http://zb.wekh.qzz.io:6000/rtp/226.0.2.234:9784
 九屏测试,http://zb.wekh.qzz.io:6000/rtp/226.0.2.197:9488
-
 
 电影轮播,#genre#
 穿越火线,https://025365.xyz:8082/huya.php?id=660101
@@ -257,7 +250,6 @@ CETV4,http://zb.wekh.qzz.io:6000/rtp/226.0.2.70:8472
 剧集_地下交通站,https://025365.xyz:8082/huya.php?id=11342433
 剧集_邻里一家亲,https://025365.xyz:8082/huya.php?id=11342426
 
-
 历年春晚,#genre#
 春晚1983,https://alimov2.a.kwimgs.com/upic/2022/01/31/15/BMjAyMjAxMzExNTU5MTRfNDAzMDAxOTlfNjYyNzMxNjcwMjBfMF8z_b_Beb3bda599f76c60c463c433ca7460153.mp4
 春晚1984,https://alimov2.a.kwimgs.com/upic/2022/01/31/15/BMjAyMjAxMzExNTU5NTRfNDAzMDAxOTlfNjYyNzMyMzg3MTRfMF8z_b_B192356dadbc90d207ba16964d4c2914c.mp4
@@ -301,9 +293,7 @@ CETV4,http://zb.wekh.qzz.io:6000/rtp/226.0.2.70:8472
 春晚2022,https://alimov2.a.kwimgs.com/upic/2022/02/01/11/BMjAyMjAyMDExMTEwMjNfNDAzMDAxOTlfNjYzNzA4MTk4NzNfMF8z_b_B898cc7ddd0025bf54ddb18ec1f723c84.mp4
 春晚2023,https://txmov2.a.kwimgs.com/bs3/video-hls/5251197255879398624_hlshd15.m3u8
 春晚2024,https://p2.bdstatic.com/rtmp.liveshow.lss-user.baidubce.com/live/stream_bduid_6488563992_8982723413/merged_1707497046297_88536_25144_41936.m3u8 
-
 央视频道,#genre#
 CCTV-1,rtp://239.1.1.7:8007
 CCTV-2,rtp://239.1.1.8:8008
 CCTV-3,rtp://239.1.1.9:8009
-
