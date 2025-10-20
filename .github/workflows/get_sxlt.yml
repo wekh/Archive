@@ -42,33 +42,39 @@ jobs:
             for idx, h in enumerate(header_idxs):
                 end = header_idxs[idx + 1] if idx + 1 < len(header_idxs) else n
                 last_line_idx = end - 1
-                # 将分组内内容加入 new_lines
+                # 添加分组内容
                 for i in range(h, end):
                     new_lines.append(lines[i])
-                # 删除原本多余空行
+                # 删除多余空行
                 while last_line_idx + 1 < len(lines) and lines[last_line_idx + 1].strip() == "":
                     last_line_idx += 1
-                # 添加一行空行
+                # 保证分组最后只有一行空行
                 if new_lines[-1].strip() != "":
                     new_lines.append("")
-
-            # 添加末尾可能未覆盖的行
-            if not header_idxs or header_idxs[0] > 0:
-                pre_lines = lines[:header_idxs[0]] if header_idxs else lines
-                for line in pre_lines:
-                    new_lines.insert(0, line)
-
             return "\n".join(new_lines)
 
         with open("tvlive/iptv.txt", "w") as file:
+            first_file = True
             for url in urls:
                 try:
                     response = requests.get(url)
                     response.raise_for_status()
                     playlist = response.text
                     playlist = ensure_one_blank_line_after_group(playlist)
-                    if not playlist.endswith('\n'):
-                        playlist += '\n'
+
+                    # 合并文件时，前一个文件末尾没有空行，插入一行空行
+                    if not first_file:
+                        file.seek(file.tell() - 1)
+                        # 检查上一行是否为空行
+                        file.seek(0)
+                        content = file.read()
+                        if not content.endswith("\n\n"):
+                            file.write("\n")
+                    first_file = False
+
+                    if not playlist.endswith("\n"):
+                        playlist += "\n"
+
                     file.write(playlist)
                     print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
                 except requests.exceptions.RequestException as e:
