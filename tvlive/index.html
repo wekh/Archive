@@ -69,11 +69,15 @@
             flex-direction: column;
             height: 100%;
             border: 1px solid #e1f5fe;
+            text-decoration: none; /* 去掉下划线 */
+            color: inherit; /* 继承文字颜色 */
         }
         
         .resource-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+            text-decoration: none; /* 悬停时也去掉下划线 */
+            color: inherit; /* 悬停时继承文字颜色 */
         }
         
         .card-header {
@@ -158,93 +162,27 @@
             background: #f57c00;
         }
         
-        .player-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 28px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            border: 1px solid #e1f5fe;
-        }
-        
-        .player-section h2 {
-            color: #1565c0;
-            margin-bottom: 22px;
-            font-size: 1.55rem;
-            text-align: center;
-        }
-        
-        .player-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 22px;
-            justify-content: center;
-        }
-        
-        .player-card {
-            background: #f5fbff;
-            border-radius: 10px;
-            padding: 22px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: transform 0.3s;
-            border: 1px solid #bbdefb;
-        }
-        
-        .player-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-        }
-        
-        .player-name {
-            font-weight: 600;
-            margin-bottom: 12px;
-            color: #1565c0;
-            font-size: 1.35rem;
-        }
-        
         .player-link {
-            display: inline-block;
+            display: flex;
             background: #2196f3;
             color: white;
-            text-decoration: none;
-            padding: 14px 22px;
-            border-radius: 6px;
-            margin-top: 14px;
-            transition: background 0.3s;
+            border: none;
+            padding: 0 20px;
             cursor: pointer;
-            font-weight: 500;
-            width: 100%;
-            max-width: 200px;
+            transition: background 0.3s;
+            font-weight: 600;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
             font-size: 1.05rem;
+            border-radius: 8px;
+            text-decoration: none; /* 去掉下划线 */
         }
         
         .player-link:hover {
             background: #1976d2;
-        }
-        
-        .instructions {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 28px;
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-            margin-top: 30px;
-            border: 1px solid #e1f5fe;
-        }
-        
-        .instructions h2 {
-            color: #1565c0;
-            margin-bottom: 18px;
-            font-size: 1.55rem;
-        }
-        
-        .instructions p {
-            line-height: 1.6;
-            margin-bottom: 14px;
-            color: #37474f;
-            font-size: 1.05rem;
+            text-decoration: none; /* 悬停时也去掉下划线 */
+            color: white;
         }
         
         footer {
@@ -296,11 +234,7 @@
                 gap: 20px;
             }
             
-            .player-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .resource-card, .player-section, .instructions {
+            .resource-card {
                 padding: 22px;
             }
             
@@ -316,7 +250,7 @@
                 min-height: 46px;
             }
             
-            .copy-btn, .visit-btn {
+            .copy-btn, .visit-btn, .player-link {
                 padding: 14px;
                 min-height: 46px;
             }
@@ -331,7 +265,7 @@
                 font-size: 1.8rem;
             }
             
-            .resource-card, .player-section, .instructions {
+            .resource-card {
                 padding: 20px;
             }
         }
@@ -367,34 +301,8 @@
             <p class="subtitle">点击下方地址即可复制到剪贴板</p>
         </header>
         
-        <!-- 资源卡片区域 -->
+        <!-- 所有卡片都在同一个网格中 -->
         <div class="resource-grid" id="resource-grid"></div>
-        
-        <!-- 播放器区域 -->
-        <div class="player-section">
-            <h2>推荐播放器</h2>
-            <div class="player-grid">
-                <div class="player-card">
-                    <div class="player-name">TVBox</div>
-                    <p>功能强大的开源播放器</p>
-                    <a href="https://tvbox.wekh.eu.org/" class="player-link" target="_blank">TVBox下载地址</a>
-                </div>
-                <div class="player-card">
-                    <div class="player-name">酷9</div>
-                    <p>简洁易用的播放器</p>
-                    <span class="player-link" id="ku9-link">酷9下载地址</span>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 使用说明 -->
-        <div class="instructions">
-            <h2>使用说明</h2>
-            <p>1. 点击"复制"按钮将地址复制到剪贴板</p>
-            <p>2. 在播放器中粘贴该地址</p>
-            <p>3. 加载资源即可观看内容</p>
-            <p>4. 推荐使用 TVBox、酷9 等播放器应用</p>
-        </div>
         
         <footer>
             <p>© 2024 电视资源聚合 | 仅供学习和交流使用</p>
@@ -405,7 +313,7 @@
     <div class="copy-notification" id="copy-notification">已复制到剪贴板</div>
 
     <script>
-        // 所有数据集中配置
+        // 所有数据集中配置（包括播放器）
         const resources = [
             { title: "TVBox配置", url: "https://tv.wekh.eu.org/tvbox.txt", desc: "TVBox播放器的配置文件，包含直播源和点播资源。", type: "copy" },
             { title: "IPTV直播源", url: "https://tv.wekh.eu.org/iptv.txt", desc: "IPTV直播源文件，包含多个直播频道地址。", type: "copy" },
@@ -414,7 +322,9 @@
             { title: "EPG节目指南", url: "https://tv.wekh.eu.org/epg", desc: "电子节目指南，提供电视节目的详细信息。", type: "copy" },
             { title: "EPG电视指南(XML)", url: "https://tv.wekh.eu.org/pp.xml", desc: "XML格式的EPG电视指南，提供节目信息。", type: "copy" },
             { title: "酒店IPTV资源", url: "https://tonkiang.us/", desc: "酒店IPTV直播源聚合页面，提供多种直播资源。", type: "visit" },
-            { title: "冰茶直播源", url: "https://show.188766.xyz/", desc: "免费公益直播源，底部生成订阅链接", type: "visit" }
+            { title: "冰茶直播源", url: "https://show.188766.xyz/", desc: "免费公益直播源，底部生成订阅链接", type: "visit" },
+            { title: "TVBox播放器", url: "https://tvbox.wekh.eu.org/", desc: "功能强大的开源播放器，支持多种视频格式和直播源", type: "player", target: "_blank" },
+            { title: "酷9播放器", url: "https://wfy.lanzout.com/b0izqfjwb", desc: "简洁易用的播放器，操作简单，资源占用低", type: "player", password: "123456" }
         ];
 
         // 防止缩放和双击放大的额外措施
@@ -447,13 +357,12 @@
         }, false);
         
         document.addEventListener('DOMContentLoaded', function() {
-            // 渲染资源卡片
+            // 渲染所有卡片
             renderResources();
             
             const copyNotification = document.getElementById('copy-notification');
-            const ku9Link = document.getElementById('ku9-link');
             
-            // 复制和访问功能
+            // 复制、访问和播放器功能
             document.addEventListener('click', function(e) {
                 if (e.target.closest('.copy-btn')) {
                     const card = e.target.closest('.resource-card');
@@ -463,17 +372,22 @@
                     const card = e.target.closest('.resource-card');
                     const url = card.getAttribute('data-url');
                     window.open(url, '_blank');
+                } else if (e.target.closest('.player-link')) {
+                    const card = e.target.closest('.resource-card');
+                    const password = card.getAttribute('data-password');
+                    const url = card.getAttribute('data-url');
+                    
+                    if (password) {
+                        // 酷9播放器：先复制密码，再打开链接
+                        copyToClipboard(password, '密码已复制，粘贴使用');
+                        setTimeout(() => {
+                            window.open(url, '_blank');
+                        }, 500);
+                    } else {
+                        // TVBox播放器：直接打开链接
+                        window.open(url, '_blank');
+                    }
                 }
-            });
-            
-            // 酷9下载地址点击事件 - 复制密码
-            ku9Link.addEventListener('click', function() {
-                copyToClipboard('123456', '密码已复制，粘贴使用');
-                
-                // 延迟打开下载页面
-                setTimeout(() => {
-                    window.open('https://wfy.lanzout.com/b0izqfjwb', '_blank');
-                }, 500);
             });
             
             // 复制到剪贴板函数
@@ -503,23 +417,41 @@
                 }, 2000);
             }
 
-            // 渲染资源卡片
+            // 渲染所有卡片
             function renderResources() {
                 const grid = document.getElementById('resource-grid');
-                const html = resources.map(resource => `
-                    <div class="resource-card" data-url="${resource.url}">
-                        <div class="card-header">
-                            <h2 class="card-title">${resource.title}</h2>
-                        </div>
-                        <p class="card-description">${resource.desc}</p>
-                        <div class="url-container">
-                            <div class="url-text">${resource.url}</div>
-                            <button class="${resource.type === 'visit' ? 'visit-btn' : 'copy-btn'}">
-                                ${resource.type === 'visit' ? '访问' : '复制'}
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
+                const html = resources.map(resource => {
+                    if (resource.type === 'player') {
+                        // 播放器卡片
+                        return `
+                            <div class="resource-card" data-url="${resource.url}" ${resource.password ? `data-password="${resource.password}"` : ''}>
+                                <div class="card-header">
+                                    <h2 class="card-title">${resource.title}</h2>
+                                </div>
+                                <p class="card-description">${resource.desc}</p>
+                                <div class="player-link">
+                                    ${resource.title}下载地址
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        // 资源卡片
+                        return `
+                            <div class="resource-card" data-url="${resource.url}">
+                                <div class="card-header">
+                                    <h2 class="card-title">${resource.title}</h2>
+                                </div>
+                                <p class="card-description">${resource.desc}</p>
+                                <div class="url-container">
+                                    <div class="url-text">${resource.url}</div>
+                                    <button class="${resource.type === 'visit' ? 'visit-btn' : 'copy-btn'}">
+                                        ${resource.type === 'visit' ? '访问' : '复制'}
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }).join('');
                 grid.innerHTML = html;
             }
         });
