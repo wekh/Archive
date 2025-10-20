@@ -2,9 +2,9 @@ name: Get Iptv
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 每小时运行一次 (每分钟:0，每小时)
-      timezone: Asia/Shanghai  # 设置时区为上海（北京）时间
-  workflow_dispatch:  # 手动触发
+    - cron: '0 * * * *'  # 每小时运行一次
+      timezone: Asia/Shanghai
+  workflow_dispatch:
 
 jobs:
   get_streams:
@@ -17,7 +17,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3.x'
+        python-version: '3.12'
 
     - name: Install dependencies
       run: |
@@ -26,38 +26,51 @@ jobs:
 
     - name: Create and Run Python script
       run: |
-        echo "import requests" > get_iptv.py
-        echo "" >> get_iptv.py
-        echo "# 定义两个 URL" >> get_iptv.py
-        echo "urls = [" >> get_iptv.py
-        echo "    \"https://fanmingming.com/txt?url=https://live.fanmingming.com/tv/m3u/ipv6.m3u\"," >> get_iptv.py
-        echo "    \"https://tv.wekh.eu.org/itv.txt\"" >> get_iptv.py
-        echo "]" >> get_iptv.py
-        echo "" >> get_iptv.py
-        echo "# 打开文件以写入模式" >> get_iptv.py
-        echo "with open(\"tvlive/iptv.txt\", \"w\") as file:" >> get_iptv.py  # 修改文件路径
-        echo "    for url in urls:" >> get_iptv.py
-        echo "        try:" >> get_iptv.py
-        echo "            response = requests.get(url)" >> get_iptv.py
-        echo "            response.raise_for_status()  # 检查请求是否成功" >> get_iptv.py
-        echo "            playlist = response.text" >> get_iptv.py
-        echo "" >> get_iptv.py
-        echo "            # 在每个 #genre# 后面添加 ,https://tv.wekh.eu.org/epg" >> get_iptv.py
-        echo "            playlist = playlist.replace(\"#genre#\", \"#genre#,https://tv.wekh.eu.org/epg\")" >> get_iptv.py
-        echo "" >> get_iptv.py
-        echo "            # 检查最后一行是否为空行" >> get_iptv.py
-        echo "            if not playlist.endswith('\\n'):" >> get_iptv.py
-        echo "                playlist += '\\n'" >> get_iptv.py
-        echo "" >> get_iptv.py
-        echo "            # 写入 URL 内容" >> get_iptv.py
-        echo "            file.write(playlist)" >> get_iptv.py
-        echo "" >> get_iptv.py
-        echo "            print(f\"内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中\")" >> get_iptv.py  # 修改打印信息
-        echo "" >> get_iptv.py
-        echo "        except requests.exceptions.RequestException as e:" >> get_iptv.py
-        echo "            print(f\"请求失败: {url} - {e}\")" >> get_iptv.py
-        echo "" >> get_iptv.py
-        echo "print(\"所有内容已处理完毕\")" >> get_iptv.py
+        cat > get_iptv.py << 'EOF'
+        import os
+        import requests
+
+        os.makedirs("tvlive", exist_ok=True)
+
+        urls = [
+            "https://fanmingming.com/txt?url=https://live.fanmingming.com/tv/m3u/ipv6.m3u",
+            "https://tv.wekh.eu.org/itv.txt"
+        ]
+
+        def ensure_one_blank_line_after_group(lines):
+            new_lines = []
+            n = len(lines)
+            i = 0
+            while i < n:
+                line = lines[i]
+                new_lines.append(line)
+                if "#genre#" in line:
+                    j = i + 1
+                    while j < n and "#genre#" not in lines[j]:
+                        new_lines.append(lines[j])
+                        j += 1
+                    while new_lines and new_lines[-1].strip() == "":
+                        new_lines.pop()
+                    new_lines.append("")
+                    i = j
+                else:
+                    i += 1
+            return new_lines
+
+        with open("tvlive/iptv.txt", "w") as f:
+            for url in urls:
+                try:
+                    r = requests.get(url, timeout=30)
+                    r.raise_for_status()
+                    lines = r.text.splitlines()
+                    lines = ensure_one_blank_line_after_group(lines)
+                    f.write("\n".join(lines) + "\n")
+                    print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
+                except requests.exceptions.RequestException as e:
+                    print(f"❌ 请求失败: {url} - {e}")
+
+        print("🎬 所有内容已处理完毕")
+        EOF
 
         python get_iptv.py
 
@@ -65,6 +78,6 @@ jobs:
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add tvlive/iptv.txt  # 修改文件路径
+        git add tvlive/iptv.txt
         git commit -m "Update live streams playlist" --allow-empty
         git push
