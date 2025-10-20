@@ -28,13 +28,6 @@
         { "type": "host", "value": "tv.wekh.eu.org" }
       ]
     },
-    {
-      "source": "/bctv.txt",
-      "destination": "https://fy.188766.xyz/?ip=&mima=mianfeidehaimaiqian",
-      "has": [
-        { "type": "host", "value": "tv.wekh.eu.org" }
-      ]
-    },
 
     {
       "source": "/(.*)",
