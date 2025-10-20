@@ -2,7 +2,7 @@ name: Get Sxlt
 
 on:
   schedule:
-    - cron: '0 */6 * * *'  # 每 6 小时运行一次
+    - cron: '0 */6 * * *'
       timezone: Asia/Shanghai
   workflow_dispatch:
 
@@ -34,16 +34,29 @@ jobs:
             "https://tv.wekh.eu.org/itv.txt"
         ]
 
-        def ensure_blank_line_before_genre(text: str) -> str:
-            """确保每个 #genre# 前至少有一个空行"""
+        def ensure_blank_line_after_group(text: str) -> str:
             lines = text.splitlines()
+            n = len(lines)
+            header_idxs = [i for i, line in enumerate(lines) if "#genre#" in line]
+            insert_after = set()
+            for idx, h in enumerate(header_idxs):
+                end = header_idxs[idx + 1] if idx + 1 < len(header_idxs) else n
+                last_line_idx = end - 1
+                insert_after.add(last_line_idx + 1)
+
             new_lines = []
-            for i, line in enumerate(lines):
-                if line.strip().endswith("#genre#"):
-                    # 如果上一行不是空行，则在前面插入空行
-                    if i > 0 and lines[i - 1].strip() != "":
+            for i in range(n):
+                new_lines.append(lines[i])
+                pos_after = i + 1
+                if pos_after in insert_after:
+                    if pos_after < n and lines[pos_after].strip() == "":
+                        pass
+                    else:
                         new_lines.append("")
-                new_lines.append(line)
+
+            if n in insert_after and (n == 0 or lines[-1].strip() != ""):
+                new_lines.append("")
+
             return "\n".join(new_lines)
 
         with open("tvlive/iptv.txt", "w") as file:
@@ -52,16 +65,11 @@ jobs:
                     response = requests.get(url)
                     response.raise_for_status()
                     playlist = response.text
-
-                    # 保证 #genre# 前有空行
-                    playlist = ensure_blank_line_before_genre(playlist)
-
+                    playlist = ensure_blank_line_after_group(playlist)
                     if not playlist.endswith('\n'):
                         playlist += '\n'
-
                     file.write(playlist)
                     print(f"✅ 内容已成功从 {url} 保存到 tvlive/iptv.txt 文件中")
-
                 except requests.exceptions.RequestException as e:
                     print(f"❌ 请求失败: {url} - {e}")
 
