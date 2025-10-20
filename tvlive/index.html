@@ -24,10 +24,6 @@
             background: linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9);
             color: #333;
             min-height: 100vh;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
         
         .container {
@@ -60,6 +56,7 @@
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-bottom: 40px;
+            justify-content: center;
         }
         
         .resource-card {
@@ -181,6 +178,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 22px;
+            justify-content: center;
         }
         
         .player-card {
@@ -325,10 +323,6 @@
         }
         
         @media (max-width: 480px) {
-            body {
-                padding: 20px;
-            }
-            
             .container {
                 padding: 15px;
             }
@@ -373,97 +367,10 @@
             <p class="subtitle">点击下方地址即可复制到剪贴板</p>
         </header>
         
-        <div class="resource-grid">
-            <div class="resource-card" data-url="https://tv.wekh.eu.org/tvbox.txt">
-                <div class="card-header">
-                    <h2 class="card-title">TVBox配置</h2>
-                </div>
-                <p class="card-description">TVBox播放器的配置文件，包含直播源和点播资源。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="copy-btn">复制</button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-url="https://tv.wekh.eu.org/iptv.txt">
-                <div class="card-header">
-                    <h2 class="card-title">IPTV直播源</h2>
-                </div>
-                <p class="card-description">IPTV直播源文件，包含多个直播频道地址。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="copy-btn">复制</button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-url="https://tv.wekh.eu.org/sxdx.txt">
-                <div class="card-header">
-                    <h2 class="card-title">山西电信组播源</h2>
-                </div>
-                <p class="card-description">山西电信组播源，山西电信内网可看。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="copy-btn">复制</button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-url="https://tv.wekh.eu.org/sxlt.txt">
-                <div class="card-header">
-                    <h2 class="card-title">山西联通组播源</h2>
-                </div>
-                <p class="card-description">山西联通组播源，不可用。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="copy-btn">复制</button>
-                </div>
-            </div>
-            
-            <div class="resource-card" data-url="https://tv.wekh.eu.org/epg">
-                <div class="card-header">
-                    <h2 class="card-title">EPG节目指南</h2>
-                </div>
-                <p class="card-description">电子节目指南，提供电视节目的详细信息。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="copy-btn">复制</button>
-                </div>
-            </div>
-            
-            <div class="resource-card" data-url="https://tv.wekh.eu.org/pp.xml">
-                <div class="card-header">
-                    <h2 class="card-title">EPG电视指南(XML)</h2>
-                </div>
-                <p class="card-description">XML格式的EPG电视指南，提供节目信息。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="copy-btn">复制</button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-url="https://tonkiang.us/" data-type="visit">
-                <div class="card-header">
-                    <h2 class="card-title">酒店IPTV资源</h2>
-                </div>
-                <p class="card-description">酒店IPTV直播源聚合页面，提供多种直播资源。</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="visit-btn">访问</button>
-                </div>
-            </div>
-
-            <div class="resource-card" data-url="https://show.188766.xyz/" data-type="visit">
-                <div class="card-header">
-                    <h2 class="card-title">冰茶直播源</h2>
-                </div>
-                <p class="card-description">免费公益直播源，底部生成订阅链接</p>
-                <div class="url-container">
-                    <div class="url-text"></div>
-                    <button class="visit-btn">访问</button>
-                </div>
-            </div>
-
-        </div>
+        <!-- 资源卡片区域 -->
+        <div class="resource-grid" id="resource-grid"></div>
         
+        <!-- 播放器区域 -->
         <div class="player-section">
             <h2>推荐播放器</h2>
             <div class="player-grid">
@@ -480,6 +387,7 @@
             </div>
         </div>
         
+        <!-- 使用说明 -->
         <div class="instructions">
             <h2>使用说明</h2>
             <p>1. 点击"复制"按钮将地址复制到剪贴板</p>
@@ -497,7 +405,19 @@
     <div class="copy-notification" id="copy-notification">已复制到剪贴板</div>
 
     <script>
-        // 禁止缩放和双击放大的额外措施
+        // 所有数据集中配置
+        const resources = [
+            { title: "TVBox配置", url: "https://tv.wekh.eu.org/tvbox.txt", desc: "TVBox播放器的配置文件，包含直播源和点播资源。", type: "copy" },
+            { title: "IPTV直播源", url: "https://tv.wekh.eu.org/iptv.txt", desc: "IPTV直播源文件，包含多个直播频道地址。", type: "copy" },
+            { title: "山西电信组播源", url: "https://tv.wekh.eu.org/sxdx.txt", desc: "山西电信组播源，山西电信内网可看。", type: "copy" },
+            { title: "山西联通组播源", url: "https://tv.wekh.eu.org/sxlt.txt", desc: "山西联通组播源，不可用。", type: "copy" },
+            { title: "EPG节目指南", url: "https://tv.wekh.eu.org/epg", desc: "电子节目指南，提供电视节目的详细信息。", type: "copy" },
+            { title: "EPG电视指南(XML)", url: "https://tv.wekh.eu.org/pp.xml", desc: "XML格式的EPG电视指南，提供节目信息。", type: "copy" },
+            { title: "酒店IPTV资源", url: "https://tonkiang.us/", desc: "酒店IPTV直播源聚合页面，提供多种直播资源。", type: "visit" },
+            { title: "冰茶直播源", url: "https://show.188766.xyz/", desc: "免费公益直播源，底部生成订阅链接", type: "visit" }
+        ];
+
+        // 防止缩放和双击放大的额外措施
         document.addEventListener('touchstart', function(event) {
             if (event.touches.length > 1) {
                 event.preventDefault();
@@ -527,35 +447,23 @@
         }, false);
         
         document.addEventListener('DOMContentLoaded', function() {
-            const copyButtons = document.querySelectorAll('.copy-btn');
-            const visitButtons = document.querySelectorAll('.visit-btn');
+            // 渲染资源卡片
+            renderResources();
+            
             const copyNotification = document.getElementById('copy-notification');
             const ku9Link = document.getElementById('ku9-link');
-            const urlTexts = document.querySelectorAll('.url-text');
             
-            // 初始化URL文本显示
-            urlTexts.forEach(urlText => {
-                const card = urlText.closest('.resource-card');
-                const url = card.getAttribute('data-url');
-                urlText.textContent = url;
-            });
-            
-            // 复制按钮功能
-            copyButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const card = this.closest('.resource-card');
+            // 复制和访问功能
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.copy-btn')) {
+                    const card = e.target.closest('.resource-card');
                     const url = card.getAttribute('data-url');
                     copyToClipboard(url, '已复制到剪贴板');
-                });
-            });
-            
-            // 访问按钮功能
-            visitButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const card = this.closest('.resource-card');
+                } else if (e.target.closest('.visit-btn')) {
+                    const card = e.target.closest('.resource-card');
                     const url = card.getAttribute('data-url');
                     window.open(url, '_blank');
-                });
+                }
             });
             
             // 酷9下载地址点击事件 - 复制密码
@@ -593,6 +501,26 @@
                 setTimeout(() => {
                     copyNotification.classList.remove('show');
                 }, 2000);
+            }
+
+            // 渲染资源卡片
+            function renderResources() {
+                const grid = document.getElementById('resource-grid');
+                const html = resources.map(resource => `
+                    <div class="resource-card" data-url="${resource.url}">
+                        <div class="card-header">
+                            <h2 class="card-title">${resource.title}</h2>
+                        </div>
+                        <p class="card-description">${resource.desc}</p>
+                        <div class="url-container">
+                            <div class="url-text">${resource.url}</div>
+                            <button class="${resource.type === 'visit' ? 'visit-btn' : 'copy-btn'}">
+                                ${resource.type === 'visit' ? '访问' : '复制'}
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+                grid.innerHTML = html;
             }
         });
     </script>
