@@ -293,7 +293,10 @@ CETV4,http://zb.wekh.qzz.io:6000/rtp/226.0.2.70:8472
 春晚2022,https://alimov2.a.kwimgs.com/upic/2022/02/01/11/BMjAyMjAyMDExMTEwMjNfNDAzMDAxOTlfNjYzNzA4MTk4NzNfMF8z_b_B898cc7ddd0025bf54ddb18ec1f723c84.mp4
 春晚2023,https://txmov2.a.kwimgs.com/bs3/video-hls/5251197255879398624_hlshd15.m3u8
 春晚2024,https://p2.bdstatic.com/rtmp.liveshow.lss-user.baidubce.com/live/stream_bduid_6488563992_8982723413/merged_1707497046297_88536_25144_41936.m3u8 
+
+
 央视频道,#genre#
 CCTV-1,rtp://239.1.1.7:8007
 CCTV-2,rtp://239.1.1.8:8008
 CCTV-3,rtp://239.1.1.9:8009
+
