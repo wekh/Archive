@@ -1,4 +1,4 @@
-name: Get Sxzb
+name: Get sxlt
 
 on:
   schedule:
@@ -30,7 +30,7 @@ jobs:
         import requests
 
         urls = [
-            "https://tv.wekh.eu.org/sxzb.txt",
+            "https://tv.wekh.eu.org/sxlt.txt",
             "https://tv.wekh.eu.org/itv.txt"
         ]
 
