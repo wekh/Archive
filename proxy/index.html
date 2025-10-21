@@ -116,7 +116,7 @@
 
         .resource-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 16px;
             margin-bottom: 30px;
         }
@@ -158,10 +158,33 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background: var(--primary-light);
-            color: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
             font-size: 20px;
             flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(255, 255, 255, 0.3) 0%,
+                rgba(255, 255, 255, 0.1) 40%,
+                rgba(255, 255, 255, 0) 60%
+            );
+            transform: rotate(30deg);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover .card-icon::before {
+            transform: rotate(30deg) translate(10px, 10px);
         }
 
         .card-title-container {
@@ -200,7 +223,7 @@
             flex-grow: 1;
             font-family: monospace;
             font-size: 0.8rem;
-            color: #000000; /* 改为黑色 */
+            color: #000000;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -326,10 +349,9 @@
     </div>
 
     <script>
-        // 所有数据集中配置 - 保持分类结构
+        // 所有数据集中配置 - 简化结构
         const sections = [
             {
-                id: 'subscriptions',
                 title: '订阅节点',
                 icon: 'share-alt',
                 cardIcon: 'link',
@@ -391,7 +413,6 @@
                 ]
             },
             {
-                id: 'deployments',
                 title: '部署源码',
                 icon: 'code',
                 cardIcon: 'file-code',
@@ -417,7 +438,6 @@
                 ]
             },
             {
-                id: 'proxies',
                 title: 'ProxyIP',
                 icon: 'globe',
                 cardIcon: 'network-wired',
@@ -495,7 +515,7 @@
             const app = document.getElementById('app');
             const copyNotification = document.getElementById('copy-notification');
             
-            // 渲染整个页面 - 保持分类结构
+            // 渲染整个页面 - 简化结构
             function renderPage() {
                 const html = sections.map(section => `
                     <div class="section">
@@ -505,7 +525,7 @@
                             </div>
                             <h2 class="section-title">${section.title}</h2>
                         </div>
-                        <div class="resource-grid" id="${section.id}-grid">
+                        <div class="resource-grid">
                             ${section.items.map(item => createCardHTML(item, section.cardIcon)).join('')}
                         </div>
                     </div>
@@ -513,7 +533,7 @@
                 app.innerHTML = html;
             }
             
-            // 创建卡片HTML - 添加大图标
+            // 创建卡片HTML
             function createCardHTML(item, cardIcon) {
                 const actionIcon = item.type === 'visit' ? 'fa-external-link-alt' : 'fa-copy';
                 return `
