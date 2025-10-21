@@ -112,11 +112,6 @@ jobs:
         const fs = require('fs');
         const axios = require('axios');
 
-        if (!process.env.CLOUDFLARE_API_TOKEN) {
-          console.error('❌ 未检测到 CLOUDFLARE_API_TOKEN');
-          process.exit(1);
-        }
-
         const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
         const DOMAIN = process.env.DOMAIN;
         const SUB_DOMAIN = process.env.SUB_DOMAIN;
@@ -144,13 +139,9 @@ jobs:
           return res.data.result;
         }
 
-        async function updateDns(zoneId, recordId, ip) {
-          await axios.put(
-            `${CLOUDFLARE_API_URL}/zones/${zoneId}/dns_records/${recordId}`,
-            { type: 'A', name: SUB_DOMAIN, content: ip, ttl: 1, proxied: false },
-            { headers }
-          );
-          console.log(`✅ 更新: ${ip}`);
+        async function deleteDns(zoneId, recordId, content) {
+          await axios.delete(`${CLOUDFLARE_API_URL}/zones/${zoneId}/dns_records/${recordId}`, { headers });
+          console.log(`🗑 已删除旧记录: ${content}`);
         }
 
         async function createDns(zoneId, ip) {
@@ -165,31 +156,26 @@ jobs:
         async function main() {
           try {
             const zoneId = await getZoneId();
-            const records = await getDnsRecords(zoneId);
+            const oldRecords = await getDnsRecords(zoneId);
 
-            console.log(`\n当前记录数: ${records.length}`);
-            console.log(`计划更新: ${availableIps.length} 个 IP`);
-
-            for (let i = 0; i < availableIps.length; i++) {
-              const ip = availableIps[i];
-              if (records[i]) {
-                await updateDns(zoneId, records[i].id, ip);
-              } else {
-                await createDns(zoneId, ip);
+            // 🧹 Step 1: 删除全部旧记录
+            if (oldRecords.length > 0) {
+              console.log(`\n发现 ${oldRecords.length} 条旧记录，正在删除...`);
+              for (const rec of oldRecords) {
+                await deleteDns(zoneId, rec.id, rec.content);
               }
+            } else {
+              console.log('没有旧记录，无需删除');
             }
 
-            // 删除多余记录
-            if (records.length > availableIps.length) {
-              const extra = records.slice(availableIps.length);
-              for (const rec of extra) {
-                await axios.delete(`${CLOUDFLARE_API_URL}/zones/${zoneId}/dns_records/${rec.id}`, { headers });
-                console.log(`🗑 删除: ${rec.content}`);
-              }
+            // 🆕 Step 2: 添加新 IP 记录
+            console.log(`\n开始添加 ${availableIps.length} 个新 IP ...`);
+            for (const ip of availableIps) {
+              await createDns(zoneId, ip);
             }
 
             const finalRecords = await getDnsRecords(zoneId);
-            console.log('\n=== 当前 DNS 记录 ===');
+            console.log('\n=== ✅ 当前 DNS 记录 ===');
             finalRecords.forEach(r => console.log(`${r.name} → ${r.content}`));
           } catch (e) {
             console.error('❌ 出错:', e.response?.data || e.message);
