@@ -1,0 +1,127 @@
+name: Scan Shanxi Unicom IPTV IPs
+
+on:
+  schedule:
+    - cron: '0 0 */3 * *'  # 每3天运行一次，0点0分
+      timezone: Asia/Shanghai
+  workflow_dispatch:
+
+jobs:
+  scan_ips:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install aiohttp
+
+    - name: Scan available IPs asynchronously with retries and save /24 netblocks to tvlive/zbip.txt
+      shell: python
+      run: |
+        import asyncio
+        import aiohttp
+        import ipaddress
+        import os
+
+        OUTPUT_FILE = 'tvlive/zbip.txt'
+        os.makedirs('tvlive', exist_ok=True)
+
+        async def test_ip(session, ip, retries=4):
+            for attempt in range(retries + 1):
+                try:
+                    async with session.get(f'http://{ip}:6000/status', timeout=5) as r:
+                        if r.status == 200:
+                            print(f"✅ 可用 IP: {ip}")
+                            return ip
+                except:
+                    if attempt < retries:
+                        await asyncio.sleep(0.3)
+                    else:
+                        return None
+
+        async def scan_batch(session, batch):
+            tasks = [test_ip(session, ip) for ip in batch]
+            results = await asyncio.gather(*tasks)
+            return [ip for ip in results if ip]
+
+        async def fetch_available_ips(ip_ranges, batch_size=256):
+            all_ips = []
+            for r in ip_ranges:
+                net = ipaddress.IPv4Network(r)
+                all_ips.extend([str(ip) for ip in net])
+
+            connector = aiohttp.TCPConnector(limit=100)
+            timeout = aiohttp.ClientTimeout(total=5)
+
+            scanned_ips = []
+
+            async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
+                for i in range(0, len(all_ips), batch_size):
+                    batch = all_ips[i:i+batch_size]
+                    results = await scan_batch(session, batch)
+                    if results:
+                        scanned_ips.extend(results)
+                        print(f"🔹 本批发现 {len(results)} 个新可用 IP，总共 {len(scanned_ips)} 个可用 IP")
+
+            return scanned_ips
+
+        if __name__ == "__main__":
+            ip_ranges = [
+                # 118.79 系列
+                "118.79.12.0/24","118.79.113.0/24","118.79.114.0/24","118.79.115.0/24",
+                "118.79.116.0/24","118.79.117.0/24","118.79.118.0/24","118.79.119.0/24",
+                "118.79.136.0/24","118.79.137.0/24","118.79.138.0/24","118.79.139.0/24",
+                "118.79.140.0/24","118.79.141.0/24","118.79.142.0/24","118.79.143.0/24",
+
+                # 171.119 / 171.125 系列
+                "171.119.200.0/24","171.119.201.0/24","171.119.202.0/24","171.119.203.0/24",
+                "171.119.204.0/24","171.119.205.0/24","171.119.206.0/24",
+                "171.125.90.0/24","171.125.91.0/24",
+
+                # 183.188 系列
+                "183.188.20.0/24","183.188.21.0/24","183.188.22.0/24","183.188.23.0/24",
+                "183.188.24.0/24","183.188.25.0/24","183.188.159.0/24",
+
+                # 116.179 系列
+                "116.179.130.0/24","116.179.148.0/24","116.179.149.0/24","116.179.150.0/24",
+                "116.179.151.0/24","116.179.152.0/24"
+            ]
+
+            scanned_ips = asyncio.run(fetch_available_ips(ip_ranges))
+            print(f"\n✅ 共扫描到 {len(scanned_ips)} 个可用 IP")
+
+            # 转换为 /24 网段并去重
+            available_nets = set(str(ipaddress.IPv4Network(ip + '/24', strict=False)) for ip in scanned_ips)
+
+            # 保存到文件，覆盖原文件
+            with open(OUTPUT_FILE, 'w') as f:
+                for net in sorted(available_nets):
+                    f.write(net + '\n')
+
+            print(f"✅ 共生成 {len(available_nets)} 个可用网段")
+            print(f"✅ 已保存到 {OUTPUT_FILE}")
+
+    - name: Commit tvlive/zbip.txt to repository
+      shell: bash
+      run: |
+        if [ -f tvlive/zbip.txt ]; then
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add tvlive/zbip.txt
+          git commit -m "Update tvlive/zbip.txt - $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes to commit"
+
+          git pull --rebase origin main || echo "Pull failed, continuing..."
+          git push origin main
+        else
+          echo "tvlive/zbip.txt not found, skipping commit"
+        fi
