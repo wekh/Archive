@@ -122,6 +122,11 @@ jobs:
         console.log('=== 可用 IP 列表 ===');
         availableIps.forEach(ip => console.log('→', ip));
 
+        function getRandomIps(ips, count) {
+          const shuffled = [...ips].sort(() => 0.5 - Math.random());
+          return shuffled.slice(0, Math.min(count, ips.length));
+        }
+
         async function getZoneId() {
           const res = await axios.get(`${CLOUDFLARE_API_URL}/zones?name=${DOMAIN}`, { headers });
           return res.data.result[0].id;
@@ -164,9 +169,10 @@ jobs:
               console.log('没有旧记录，无需删除');
             }
 
-            // 🆕 Step 2: 添加新 IP 记录
-            console.log(`\n开始添加 ${availableIps.length} 个新 IP ...`);
-            for (const ip of availableIps) {
+            // 🆕 Step 2: 随机选择最多 5 个 IP 更新
+            const ipsToUpdate = getRandomIps(availableIps, 5);
+            console.log(`\n开始添加 ${ipsToUpdate.length} 个新 IP ...`);
+            for (const ip of ipsToUpdate) {
               await createDns(zoneId, ip);
             }
 
