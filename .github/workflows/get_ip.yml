@@ -74,9 +74,7 @@ jobs:
                 "183.188.22.0/24",
                 "183.188.159.0/24",
                 "116.179.148.0/24",
-                "116.179.149.0/24",
-                "60.223.230.0/24",
-                "60.223.254.0/24"
+                "116.179.149.0/24"
             ]
 
             available_ips = fetch_available_ips(ip_ranges)
@@ -96,6 +94,7 @@ jobs:
           echo "no_available_ips=true" >> $GITHUB_ENV
         else
           echo "no_available_ips=false" >> $GITHUB_ENV
+        fi
 
     # ==================== 更新 Cloudflare DNS ====================
     - name: Update Cloudflare DNS
@@ -119,15 +118,8 @@ jobs:
           'Content-Type': 'application/json'
         };
 
-        let availableIps = JSON.parse(fs.readFileSync('./available_ips.json', 'utf8'));
-
-        // 随机打乱数组
-        availableIps = availableIps.sort(() => Math.random() - 0.5);
-
-        // 只保留最多 5 个
-        availableIps = availableIps.slice(0, 5);
-
-        console.log('=== 随机选择的 IP 列表（最多 5 个） ===');
+        const availableIps = JSON.parse(fs.readFileSync('./available_ips.json', 'utf8'));
+        console.log('=== 可用 IP 列表 ===');
         availableIps.forEach(ip => console.log('→', ip));
 
         async function getZoneId() {
@@ -162,6 +154,7 @@ jobs:
             const zoneId = await getZoneId();
             const oldRecords = await getDnsRecords(zoneId);
 
+            // 🧹 Step 1: 删除全部旧记录
             if (oldRecords.length > 0) {
               console.log(`\n发现 ${oldRecords.length} 条旧记录，正在删除...`);
               for (const rec of oldRecords) {
@@ -171,6 +164,7 @@ jobs:
               console.log('没有旧记录，无需删除');
             }
 
+            // 🆕 Step 2: 添加新 IP 记录
             console.log(`\n开始添加 ${availableIps.length} 个新 IP ...`);
             for (const ip of availableIps) {
               await createDns(zoneId, ip);
@@ -204,3 +198,4 @@ jobs:
             "https://sctapi.ftqq.com/$SERVER_JIANG_KEY.send"
         else
           echo "未配置 SERVER_JIANG_KEY，跳过通知"
+        fi
